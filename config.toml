@@ -1,0 +1,9 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "hugotest"
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "Starter Hugo project scaffold."
