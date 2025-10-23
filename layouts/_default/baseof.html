@@ -1,11 +1,92 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
   <head>
     <meta charset="utf-8">
-    <title>{{ block "title" . }}{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+    {{- $siteParams := .Site.Params -}}
+    {{- $siteName := default .Site.Title $siteParams.siteName -}}
+    {{- $pageMeta := or .Params.metadata (dict) -}}
+    {{- $rawTitle := default (index $pageMeta "title") .Title -}}
+    {{- if not $rawTitle -}}{{- $rawTitle = $siteName -}}{{- end -}}
+    <title>{{ $rawTitle }}</title>
+    {{- $description := "" -}}
+    {{- with index $pageMeta "description" -}}
+      {{- $description = . -}}
+    {{- end -}}
+    {{- if and (eq $description "") .Params.description -}}
+      {{- $description = .Params.description -}}
+    {{- end -}}
+    {{- if and (eq $description "") .Summary -}}
+      {{- $description = (.Summary | plainify | truncate 160) -}}
+    {{- end -}}
+    {{- if and (eq $description "") $siteParams.description -}}
+      {{- $description = $siteParams.description -}}
+    {{- end -}}
+    {{- if $description }}<meta name="description" content="{{ $description }}">{{ end -}}
+
+    {{- $canonical := or (index $pageMeta "canonical") .RelPermalink -}}
+    {{- if $canonical -}}
+      {{- if not (hasPrefix $canonical "http") -}}{{- $canonical = absURL $canonical -}}{{- end -}}
+      <link rel="canonical" href="{{ $canonical }}">
+    {{- end -}}
+
+    {{- $robotsIndex := true -}}
+    {{- $robotsFollow := true -}}
+    {{- with $siteParams.robots -}}
+      {{- with index . "index" -}}{{- $robotsIndex = . -}}{{- end -}}
+      {{- with index . "follow" -}}{{- $robotsFollow = . -}}{{- end -}}
+    {{- end -}}
+    {{- with index $pageMeta "robots" -}}
+      {{- with index . "index" -}}{{- $robotsIndex = . -}}{{- end -}}
+      {{- with index . "follow" -}}{{- $robotsFollow = . -}}{{- end -}}
+    {{- end -}}
+    <meta name="robots" content="{{ if $robotsIndex }}index{{ else }}noindex{{ end }},{{ if $robotsFollow }}follow{{ else }}nofollow{{ end }}">
+
+    {{- $ogType := "website" -}}
+    {{- with index $pageMeta "openGraph" -}}
+      {{- with index . "type" -}}{{- if . -}}{{- $ogType = . -}}{{- end -}}{{- end -}}
+    {{- end -}}
+    {{- if and (or (eq $ogType "") (eq $ogType "website")) $siteParams.opengraph -}}
+      {{- with index $siteParams.opengraph "type" -}}{{- if . -}}{{- $ogType = . -}}{{- end -}}{{- end -}}
+    {{- end -}}
+    {{- if and (eq $ogType "website") (eq .Section "blog") -}}
+      {{- $ogType = "article" -}}
+    {{- end -}}
+    {{- if eq $ogType "" -}}{{- $ogType = "website" -}}{{- end -}}
+
+    {{- $ogImage := "" -}}
+    {{- with index $pageMeta "image" -}}{{- $ogImage = . -}}{{- end -}}
+    {{- if and (eq $ogImage "") .Params.image -}}{{- $ogImage = .Params.image -}}{{- end -}}
+    {{- if eq $ogImage "" -}}
+      {{- with .Params.hero -}}
+        {{- with .image -}}{{- $ogImage = . -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if eq $ogImage "" -}}
+      {{- with $siteParams.opengraph -}}
+        {{- with index . "defaultImage" -}}{{- if . -}}{{- $ogImage = . -}}{{- end -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if and $ogImage (not (hasPrefix $ogImage "http")) -}}{{- $ogImage = absURL $ogImage -}}{{- end -}}
+
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $rawTitle }}">
+    {{- if $description }}<meta property="og:description" content="{{ $description }}">{{ end -}}
+    {{- if $canonical }}<meta property="og:url" content="{{ $canonical }}">{{ end -}}
+    <meta property="og:type" content="{{ $ogType }}">
+    {{- if $ogImage }}<meta property="og:image" content="{{ $ogImage }}">{{ end -}}
+
+    {{- $twitterHandle := $siteParams.twitterHandle -}}
+    <meta name="twitter:card" content="{{ if $ogImage }}summary_large_image{{ else }}summary{{ end }}">
+    {{- if $twitterHandle }}<meta name="twitter:site" content="{{ $twitterHandle }}">{{ end -}}
+    <meta name="twitter:title" content="{{ $rawTitle }}">
+    {{- if $description }}<meta name="twitter:description" content="{{ $description }}">{{ end -}}
+    {{- if $ogImage }}<meta name="twitter:image" content="{{ $ogImage }}">{{ end -}}
+
+    {{- with $siteParams.googleSiteVerificationId -}}<meta name="google-site-verification" content="{{ . }}">{{ end -}}
+
     <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+    {{ block "head" . }}{{ end }}
   </head>
   <body>
     {{ partial "header.html" . }}
@@ -13,5 +94,40 @@
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
+    <script>
+      (function () {
+        const toggle = document.querySelector('[data-nav-toggle]');
+        const drawer = document.querySelector('[data-nav-drawer]');
+        if (!toggle || !drawer) return;
+
+        const updateState = () => {
+          const isOpen = drawer.classList.contains('is-open');
+          document.body.classList.toggle('no-scroll', isOpen);
+          toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        };
+
+        toggle.addEventListener('click', () => {
+          drawer.classList.toggle('is-open');
+          updateState();
+        });
+
+        drawer.addEventListener('click', (event) => {
+          if (event.target === drawer) {
+            drawer.classList.remove('is-open');
+            updateState();
+          }
+        });
+
+        document.querySelectorAll('[data-nav-close]').forEach((link) => {
+          link.addEventListener('click', () => {
+            drawer.classList.remove('is-open');
+            updateState();
+          });
+        });
+
+        updateState();
+      }());
+    </script>
+    {{ block "scripts" . }}{{ end }}
   </body>
 </html>

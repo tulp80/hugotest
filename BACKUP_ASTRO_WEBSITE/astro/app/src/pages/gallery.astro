@@ -1,0 +1,50 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+
+async function getAlbumImages(albumIds: string[]) {
+	let images = import.meta.glob<{ default: ImageMetadata }>(
+		"../assets/images/gallery/**/*.{jpeg,jpg,JPEG,JPG}",
+	);
+
+	images = Object.fromEntries(
+		Object.entries(images).filter(([key]) =>
+			albumIds.some((albumId) => key.includes(`/gallery/${albumId}/`)),
+		),
+	);
+
+	const resolvedImages = await Promise.all(
+		Object.values(images).map((image) => image().then((mod) => mod.default)),
+	);
+
+	return resolvedImages;
+}
+
+let imagesimgages = (await getAlbumImages(["1", "2", "3", "4"])).sort(
+	(a, b) => {
+		const getFileName = (src) => src.split("/").pop().split("?")[0];
+		return getFileName(a.src).localeCompare(getFileName(b.src));
+	},
+);
+
+const metadata = { title: "Gallery", description: "Gallery" };
+---
+
+<Layout metadata={metadata}>
+	<div
+		class="mx-auto container my-8 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-3"
+	>
+		{
+			imagesimgages.map((image) => (
+				<Image
+					src={image}
+					alt={`afb`}
+					format="avif"
+					quality={50}
+					class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
+					loading="lazy"
+				/>
+			))
+		}
+	</div>
+</Layout>

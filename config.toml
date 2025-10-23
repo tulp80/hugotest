@@ -1,9 +1,27 @@
-baseURL = "http://example.org/"
+baseURL = "https://www.ayaselva.com/"
 languageCode = "en-us"
-title = "hugotest"
+title = "Ayaselva"
+
+ignoreFiles = ["^BACKUP_ASTRO_WEBSITE(/|$)"]
 
 [pagination]
   pagerSize = 10
 
 [params]
-  description = "Starter Hugo project scaffold."
+  description = "Discover Ayaselva in Tamshiyacu, a healing center offering transformative ayahuasca ceremonies with experienced indigenous healers. Join us in the serene Amazon jungle for a profound journey of energy, love, and adventure."
+  siteName = "Ayaselva"
+  twitterHandle = "@Ayaselva"
+  googleSiteVerificationId = "orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M"
+
+  [params.robots]
+    index = true
+    follow = true
+
+  [params.opengraph]
+    type = "website"
+    defaultImage = "/images/maloca1.jpg"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

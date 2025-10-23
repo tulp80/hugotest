@@ -1,0 +1,32 @@
+{{ $hero := .Params.hero }}
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container hero__layout">
+    <div class="hero__content">
+      {{ if $hero }}
+        {{ with $hero.tagline }}
+          <p class="hero__tagline">{{ . }}</p>
+        {{ end }}
+        <h1 class="hero__title">{{ $hero.title | default .Title }}</h1>
+        {{ with $hero.description }}
+          <p class="hero__text">{{ . }}</p>
+        {{ end }}
+        {{ with $hero.button }}
+          <div>
+            <a class="btn btn--accent" href="{{ .url }}"{{ if .open_overlay }} onclick="openVideoOverlay('{{ .url }}'); return false;"{{ end }}>{{ .text }}</a>
+          </div>
+        {{ end }}
+      {{ else }}
+        <h1 class="hero__title">{{ .Title }}</h1>
+        {{ with .Params.summary }}
+          <p class="hero__text">{{ . }}</p>
+        {{ end }}
+      {{ end }}
+    </div>
+    {{ with $hero.image }}
+      <div class="hero__media">
+        <img src="{{ .src }}" alt="{{ .alt | default $.Title }}" loading="lazy">
+      </div>
+    {{ end }}
+  </div>
+</section>

@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  astro:
+    build:
+      context: .
+      dockerfile: astro/Dockerfile
+    container_name: node
+    restart: "no"
+    image: astro
+    ports:
+      - "4321:4321"
+    volumes:
+      - ./astro/app:/app
+      - /app/.pnpm-store
+      - /app/node_modules
+      - ./cache/pnpm-store:/app/.pnpm-store
+    environment:
+      MAILTOKEN001: ${MAILTOKEN001}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      GOOGLE_CAPTCHA_KEY: ${GOOGLE_CAPTCHA_KEY}
+      GOOGLE_CAPTCHA_SECRET: ${GOOGLE_CAPTCHA_SECRET}
+      PNPM_STORE_DIR: /app/.pnpm-store
+    network_mode: "bridge"
+
+volumes:
+  backup:

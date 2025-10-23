@@ -1,0 +1,96 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Content from "~/components/widgets/Content.astro";
+import Hero from "~/components/widgets/Hero.astro";
+
+const metadata = { title: "Team", description: "Meet the AyaSelva team: Arnaldo, a humble healer from Peru; Vanesa, who overcame bulimia through ayahuasca; and Peter from the Netherlands, transformed by the medicine. Together, they provide healing and support at AyaSelva." };
+---
+
+<Layout metadata={metadata}>
+	<Hero tagline="Team">
+		<Fragment slot="title">Team<br /></Fragment>
+	</Hero>
+
+
+
+	<Content
+	id="about"
+	columns={2}
+	items={[]}
+	image={{
+		src: "~/assets/images/arnaldo.jpg",
+		alt: "Colorful Image",
+		loading: "eager",
+	}}
+>
+	<Fragment slot="content">
+		<h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Arnaldo</h2>
+		<br />
+		<p>Arnaldo was raised in Tamshiyacu, Peru. Of Mestizo lineage, he has extensive experience working with Peruvian plant medicines. People describe him as a humble healer with a love for helping those facing various challenges. Arnaldo deeply respects the plant medicines and prefers to consider himself an intermediary between the spirit world and the earthly world rather than calling himself a healer.</p>
+	<br / >
+	<p>From a young age, Arnaldo was fascinated by the abundant jungle and eager to learn about the healing powers of plants. He is kind and respectful towards others and wants to share his expertise with us, for which we are very grateful.</p>
+	<br />
+	</Fragment>
+
+	<Fragment slot="bg">
+		<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+	</Fragment>
+</Content>
+
+
+
+
+
+
+	<Content
+		id="about"
+		columns={2}
+		isReversed={true}
+		items={[]}
+		image={{
+			src: "~/assets/images/vanessa.jpg",
+			alt: "Colorful Image",
+			loading: "eager",
+		}}
+	>
+		<Fragment slot="content">
+			<h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Vanessa</h2>
+			<br />
+			<p>Vanesa was born and raised in Iquitos. Suffering from bulimia in early childhood, Vanesa encountered ayahuasca at the age of 17. Amestizo maestro guided her through an intense dieta regimen, which not only helped her cure her debilitating disease but also made her love life, something she never thought was even possible. Ayahuasca helped her clean her body, spirit, and soul. After this transformative experience, she felt completely reborn and felt a strong urge to work with the medicine later in life.</p>
+			<br />
+			<p>During and after her studies, Vanesa worked at numerous ayahuasca	centers in Peru and abroad, dedicated to helping people transform	their lives as well.</p>
+			<br />
+			<p>Vanesa feels very grateful to have been healed physically and mentally by the beautiful plants of the Peruvian jungle, the "selva." She always wanted to create her own center to help people heal, share love and peace, and contribute to the local community.</p>
+			<br />
+		</Fragment>
+
+		<Fragment slot="bg">
+			<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+		</Fragment>
+	</Content>
+
+	<Content
+		id="about"
+		columns={3}
+		items={[]}
+		image={{
+			src: "~/assets/images/peter.jpg",
+			alt: "Colorful Image",
+			loading: "eager",
+		}}
+	>
+		<Fragment slot="content">
+			<h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Peter</h2>
+			<br />
+			<p>Peter was born and raised in the Netherlands. With a love for everything technical, he finished his engineering studies, after which he worked at various technical companies.</p>
+			<br />
+			<p>Little did he know, this powerful medicine would transform his life in a profoundly positive way. His perspective on life was	drastically altered, and he became more empathetic towards other people. Furthermore, ayahuasca told him in the most beautiful way to take better care of his health and mind.</p>
+			<br />
+			<p>With a shared vision, Peter and his wife Vanesa decided to create their own center and share this miracle medicine with many others.</p>
+		</Fragment>
+
+		<Fragment slot="bg">
+			<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+		</Fragment>
+	</Content>
+</Layout>

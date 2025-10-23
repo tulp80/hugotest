@@ -1,0 +1,18 @@
+---
+export interface Props {
+	label?: string;
+	class?: string;
+}
+const { label = 'MENU', class: className = 'flex flex-col items-center cursor-pointer group' } = Astro.props;
+---
+
+<button class={`${className} mr-2`} aria-label={label} data-aw-toggle-menu>
+	<slot>
+		<div class="flex flex-col items-center mt-1">
+			<span aria-hidden="true" class="h-0.5 w-5 my-0.5 rounded-full bg-black dark:bg-white transition ease transform duration-200 opacity-80 group-[.expanded]:rotate-45 group-[.expanded]:translate-y-2"></span>
+			<span aria-hidden="true" class="h-0.5 w-5 my-0.5 rounded-full bg-black dark:bg-white transition ease transform duration-200 opacity-80 group-[.expanded]:opacity-0"></span>
+			<span aria-hidden="true" class="h-0.5 w-5 my-0.5 rounded-full bg-black dark:bg-white transition ease transform duration-200 opacity-80 group-[.expanded]:-rotate-45 group-[.expanded]:-translate-y-2"></span>
+		</div>
+		<span class="text-xs mt-0">{label}</span>
+	</slot>
+</button>

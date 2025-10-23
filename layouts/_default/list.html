@@ -1,14 +1,31 @@
 {{ define "main" }}
-  <section class="list">
-    <h1>{{ .Title }}</h1>
-    {{ if .Content }}<div class="content">{{ .Content }}</div>{{ end }}
-    <ul>
-      {{ range .Pages }}
-        <li>
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 2, 2006" }}</time>{{ end }}
-        </li>
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__layout">
+      <div class="hero__content">
+        {{ with .Params.tagline }}<p class="hero__tagline">{{ . }}</p>{{ end }}
+        <h1 class="hero__title">{{ .Title }}</h1>
+        {{ with .Params.summary }}<p class="hero__text">{{ . }}</p>{{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {{ if .Content }}
+        <div class="markdown" style="margin-bottom:3rem;">{{ .Content }}</div>
       {{ end }}
-    </ul>
+      <div class="card-grid">
+        {{ range .Pages.ByDate.Reverse }}
+          <article class="card">
+            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            {{ with .Summary }}<p>{{ . }}</p>{{ end }}
+            <div class="card__meta" style="font-size:0.9rem;color:var(--color-muted);">
+              {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "02 Jan 2006" }}</time>{{ end }}
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    </div>
   </section>
 {{ end }}

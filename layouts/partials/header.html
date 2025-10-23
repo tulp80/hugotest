@@ -1,10 +1,43 @@
+{{ $nav := .Site.Data.navigation }}
+{{ $links := $nav.header.links }}
+{{ $cta := $nav.header.cta }}
+{{ $current := .RelPermalink }}
+
 <header class="site-header">
-  <div class="branding">
-    <a href="{{ "/" | relURL }}" class="site-title">{{ .Site.Title }}</a>
-    {{ with .Site.Params.description }}<p class="site-description">{{ . }}</p>{{ end }}
+  <div class="container site-header__inner">
+    <a class="site-logo" href="{{ relLangURL "/" }}" aria-label="{{ .Site.Title }}">
+      {{ partial "logo.html" . }}
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-label="Open navigation">
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <div class="site-nav__links">
+        {{ range $links }}
+          {{ $url := relLangURL .url }}
+          {{ $isActive := or (eq $current $url) (and (eq $url "/") (eq $current "/")) }}
+          <a class="site-nav__link{{ if $isActive }} site-nav__link--active{{ end }}" href="{{ $url }}"{{ if $isActive }} aria-current="page"{{ end }}>{{ .text }}</a>
+        {{ end }}
+      </div>
+
+      {{ with $cta }}
+        <a class="btn btn--ghost site-nav__cta" href="{{ .url }}" target="_blank" rel="noreferrer">{{ .text }}</a>
+      {{ end }}
+    </nav>
   </div>
-  <nav class="site-nav">
-    <a href="{{ "/" | relURL }}">Home</a>
-    <a href="{{ "/posts/" | relURL }}">Posts</a>
-  </nav>
+
+  <div class="nav-drawer" data-nav-drawer>
+    <div class="nav-drawer__panel">
+      {{ range $links }}
+        {{ $url := relLangURL .url }}
+        {{ $isActive := or (eq $current $url) (and (eq $url "/") (eq $current "/")) }}
+        <a class="nav-drawer__link{{ if $isActive }} site-nav__link--active{{ end }}" href="{{ $url }}" data-nav-close{{ if $isActive }} aria-current="page"{{ end }}>{{ .text }}</a>
+      {{ end }}
+      {{ with $cta }}
+        <a class="btn btn--primary" href="{{ .url }}" target="_blank" rel="noreferrer" data-nav-close>{{ .text }}</a>
+      {{ end }}
+    </div>
+  </div>
 </header>

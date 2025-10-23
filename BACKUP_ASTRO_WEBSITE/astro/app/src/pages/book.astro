@@ -1,0 +1,92 @@
+---
+export const prerender = false;
+import Hero from "~/components/widgets/Hero.astro";
+import Layout from "~/layouts/PageLayout.astro";
+import Content from "~/components/widgets/Content.astro";
+import retreatsData from "~/data/retreats.json";
+
+const metadata = { title: "Pricing & Booking", description: "Book Retreat The rates mentioned are all-inclusive for the ceremonies, accommodation, food and drinks. At Ayaselva, you can enjoy your stay without any hidden costs." };
+
+// Filter alleen toekomstige periodes inclusief vandaag
+const today = new Date();
+today.setHours(0, 0, 0, 0); // Reset tijd naar begin van de dag
+const futurePeriods = retreatsData.periods.filter(period => {
+    const startDate = new Date(period.startDate);
+    startDate.setHours(0, 0, 0, 0); // Reset tijd naar begin van de dag
+    return startDate >= today;
+});
+
+// Sorteer op startdatum
+futurePeriods.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+---
+
+<Layout metadata={metadata}>
+	<Hero tagline="Retreats">
+		<Fragment slot="title">
+			Pricing & Booking<br />
+		</Fragment>
+	</Hero>
+
+	<div class="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+		<section class="my-6">
+			<p class="text-center">
+				The rates mentioned are all-inclusive for the ceremonies, accommodation, food and drinks.</br> At Ayaselva, you can enjoy your stay without any hidden costs.</br></br>
+			</p>
+		</section>
+	</div>
+
+	<div class="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+		<div class="px-6 mt-6 border-t border-slate-200">
+			<ul role="list" class="divide-y divide-slate-100">
+				{
+					futurePeriods.map((period) => (
+						<li class="grid grid-cols-1 md:grid-cols-8 py-5 items-center">
+							<div class="md:col-span-2">
+								<p
+									class={`text-sm font-semibold leading-6 ring-white ${!period.available && "text-gray-500"}`}
+								>
+									{period.title}
+								</p>
+								<div
+									class={`mt-1 text-xs leading-5 ring-white ${!period.available && "text-gray-500"}`}
+								>
+									{period.included}
+								</div>
+							</div>
+							<div
+								class={`md:col-span-3 ${!period.available && "text-gray-500"}`}
+							>
+								{period.period}
+							</div>
+							<div
+								class={`md:col-span-1 ${!period.available && "text-gray-500"}`}
+							>
+								{period.days}
+							</div>
+							<div
+								class={`md:col-span-1 ${!period.available && "text-gray-500"}`}
+							>
+								$ {period.price}
+							</div>
+							<div class="md:col-span-1 text-left md:text-right">
+								{period.available ? (
+									<a
+										href={`forms/booking-form?retreatId=${period.id}`}
+										class="underline"
+									>
+										Book Now
+									</a>
+								) : (
+									"Fully booked"
+								)}
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<div class="px-6 mt-0 border-t border-slate-200"></div>
+	</div>
+	<br />
+	<br />
+</Layout>

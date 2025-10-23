@@ -1,0 +1,309 @@
+---
+export const prerender = false;
+import Layout from "~/layouts/PageLayout.astro";
+import Hero from "~/components/widgets/Hero.astro";
+import Features4 from "~/components/widgets/Features4.astro";
+import WidgetWrapper from "~/components/ui/WidgetWrapper.astro";
+import retreatsData from "~/data/retreats.json";
+
+const { PAYPAL_CLIENT_ID, MAILTOKEN001 } = import.meta.env;
+
+const totalPrice = Astro.url.searchParams.get('retreatId') ? (retreatsData.periods.find(period => period.id === Astro.url.searchParams.get('retreatId'))?.price || 9999) : 9999;
+
+const bookingOrderRow = Astro.url.searchParams.get('retreatId') ? 
+	(() => {
+   	const retreat = retreatsData.periods.find(period => period.id === Astro.url.searchParams.get('retreatId'));
+    	return `${retreat.period} (${retreat.days})  $ ${retreat.price}`;
+	})() : 'No retreat selected';
+
+function getPaypalButtonId(totalPrice) {
+	switch (totalPrice) {
+		case 1:
+			return "LF8XTSQQCV7RC";
+		case 1200:
+				return "KCJ9QF5P96HAA";
+		default: // is 1800 pakket
+         return "L4FUUTUJPVPTQ";
+			}
+		}
+
+let paypalButtonId = getPaypalButtonId(totalPrice);
+		
+let payPalMailIntro = "If you have not yet paid for your retreat, please use the link below as soon as possible so we can consider your booking final.";
+let payPalMailLink = `<a href="https://www.paypal.com/ncp/payment/${paypalButtonId}" class="text-blue-500 underline" target="_blank">PayPal online payments</a>`;
+
+const paypalScript = `
+  <script src="https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=hosted-buttons,buttons&disable-funding=credit&enable-funding=venmo&currency=USD"></script>
+  <div id="paypal-container-${paypalButtonId}" style="max-width: 490px;"></div>
+  <script>
+    paypal.HostedButtons({
+      hostedButtonId: "${paypalButtonId}",
+    }).render("#paypal-container-${paypalButtonId}");
+  </script>
+`;
+
+let lastUrlSegment = Astro.url.pathname.split('/').pop().split('?')[0]; 
+const { id } = Astro.params;
+
+let post = (Astro.request.method === "POST");
+
+class contactForm {
+	constructor() {
+		this.pageTitle = "Contact"
+		this.pageSubTitle = "Contact"
+		this.introMessage = "You can also email us: <a href=\"mailto:info@ayaselva.com\" style=\"border-bottom:1px solid;\">info@ayaselva.com</a>";
+		this.id = "form";
+		this.title = "Fill in the form below for more information!";
+		this.subtitle = "We aim to answer your questions within 24 hours!";
+		this.mailSubject = "Contact form confirmation";
+		this.inputs = [
+			{
+				type: "text",
+				name: "Name",
+				label: "Name",
+				value: "",
+				placeholder: "",
+				autocomplete: "off",
+			},
+			{
+				type: "text",
+				name: "Country",
+				label: "Country",
+				value: "",
+				placeholder: "",
+				autocomplete: "off"
+			},
+			{
+				type: "email",
+				name: "Email",
+				label: "Email",
+				value: "",
+				placeholder: "",
+				autocomplete: "off",
+			},
+			{
+				type: "text",
+				name: "Phone",
+				label: "Phone",
+				value: "",
+				placeholder: "",
+				autocomplete: "off"
+			}
+		];
+		this.textarea = {
+			name: "Message",
+			label: "Message",
+			value: "",
+			placeholder: "",
+			autocomplete: "off",
+		};
+		this.button = "Send Message";
+		this.description = undefined;
+	}
+}
+
+class bookingForm {
+	constructor() {
+		this.pageTitle = "Booking"
+		this.pageSubTitle = "Booking"
+		this.introMessage = "The retreat you have chosen is still available.<br>Please send us your contact details by email and we will get back to you as soon as possible to finalize your reservation.<br>Reservation email address: <a href=\"mailto:info@ayaselva.com\" style=\"border-bottom:1px solid;\">info@ayaselva.com</a>";
+		this.id = "form";
+		this.title = "Fill in the form below for more information!";
+		this.subtitle = "We aim to answer your questions within 24 hours!";
+		this.mailSubject = "Booking confirmation";
+		this.inputs = [
+			{
+				type: "text",
+				name: "Name",
+				label: "Name",
+				value: "",
+				placeholder: "",
+				autocomplete: "off",
+			},
+			{
+				type: "text",
+				name: "City",
+				label: "City",
+				value: "",
+				placeholder: "",
+				autocomplete: "off"
+			},
+			{
+				type: "text",
+				name: "Country",
+				label: "Country",
+				value: "",
+				placeholder: "",
+				autocomplete: "off"
+			},
+			{
+				type: "email",
+				name: "Email",
+				label: "Email",
+				value: "",
+				placeholder: "",
+				autocomplete: "off",
+			},
+			{
+				type: "text",
+				name: "Phone",
+				label: "Phone",
+				value: "",
+				placeholder: "",
+				autocomplete: "off"
+			}
+		];
+		this.textarea = {
+			name: "Comments & questions",
+			label: "Comments & questions (optional)",
+			value: "",
+			placeholder: "",
+			autocomplete: "off",
+		};
+		this.approval = {
+			name: "Approval",
+			value: "",
+			checked: false,
+			label: "By ticking the checkbox and submitting this booking, you acknowledge that you have read and accepted the Health Guidelines",
+		};
+		this.button = "Book now";
+		this.description = undefined;
+	}
+}
+
+let formProps, metadata
+ 
+if (lastUrlSegment==="booking-form") {
+	formProps = new bookingForm();
+	metadata = { title: "Booking", robots: { index: false, follow: false }, description: "Retreat Booking. At this moment, the retreat you have chosen is still available. Please use the form below to reserve your spot. Your reservation will be finalized as soon as we receive your payment." };
+} else {
+	formProps = new contactForm();
+	metadata = { title: "Contact", description: "Call or message us via WhatsApp +51 924 114 693 Location Ayaselva E.I.R.L. Carretera Yavari km 2 16311 Tamshiyacu Peru" };
+}
+
+const timestamp = new Date().getTime();
+let intromessage = formProps.introMessage;
+let errorMessages = [];
+let FormContainerShow = false
+let mailadresTo = "info@ayaselva.com"
+
+if (post) {
+  try {
+    const data = await Astro.request.formData();
+
+    for (const [key, value] of data.entries()) {
+		if (key === "Email") {mailadresTo = value;};
+		 formProps.inputs.find(input => input.name === key && (input.value = value));
+		 formProps.textarea.value = formProps.textarea.name === key ? value : formProps.textarea.value;
+		 if (value == "" && key !== "Comments & questions") {
+        	errorMessages.push(`${key} is required`);
+      } else {
+        if (key === "Email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          errorMessages.push(`Email is not valid`);
+        }
+      }
+    }
+	 if (!!formProps.approval === true && !!data.get("Approval") === false) {
+			errorMessages.push(`Approval is required`);
+			
+	}
+	if (!!formProps.approval === true && !!data.get("Approval") === true) {
+		formProps.approval.checked = true
+	}
+
+    if (errorMessages.length == 0) {
+			let formdata = [];
+			for (let [key, value] of data.entries()) {
+				if (key=="Approval") {
+					value=`Agreed to via the website on the following text:\n\n${formProps.approval.label}`
+				}
+				formdata.push({ key, value: key === "Price" ? `$ ${value}` : value });
+			}
+
+      try {
+			let introTekstMail;
+			if (lastUrlSegment==="booking-form") {		
+				
+				formdata.push({ key: 'Booked retreat', value: bookingOrderRow });
+				[formdata[formdata.length - 2], formdata[formdata.length - 1]] = [formdata[formdata.length - 1], formdata[formdata.length - 2]];
+
+				introTekstMail = `Hello,<br><br>
+										Congratulations on booking the retreat. We look forward to welcoming you. Once we have received your payment,<br> you can consider the reservation as confirmed. If the payment was not successful,<br>you can use the following payment link: ${payPalMailLink}<br><br>
+										Best regards,<br><br>
+										Team Ayaselva`;
+
+			} else {
+				introTekstMail = `Hello,<br><br>
+										Thank you for your message.<br>We do our best to answer your questions within 24 hours.<br><br>
+										Best regards,<br><br>
+										Team Ayaselva`;
+			}
+			const response = await fetch("https://api.postmarkapp.com/email/withTemplate", {
+				method: 'POST',
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json",
+					"X-Postmark-Server-Token": MAILTOKEN001
+				},
+				body: JSON.stringify({
+					From: "info@ayaselva.com",
+					To: mailadresTo,
+					Bcc: "info@ayaselva.com",
+					TemplateAlias: "code-your-own-1",
+					TemplateModel: {
+						intro: introTekstMail,
+						attachment_details: formdata,
+						subject: formProps.mailSubject
+					}
+				})
+			}, { cache: 'no-store' });
+	
+        if (response.ok) {
+			intromessage = '';
+           FormContainerShow = false;
+        } else {
+         	intromessage = 'There was an error sending your message. Please ensure all fields are filled out correctly';
+        }
+      } catch (error) {
+			intromessage = 'There was an error sending your message. Please ensure all fields are filled out correctly';
+      }
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+---
+
+<Layout metadata={metadata}>
+	<Hero tagline="Retreats">
+		<Fragment slot="title">
+			{formProps.pageSubTitle}<br />
+		</Fragment>
+	</Hero>
+
+	{lastUrlSegment !== "booking-form" && (
+	<Features4
+		title=""
+		items={[
+			{
+				title: "Call or message us via WhatsApp",
+				description:'<a href="https://wa.me/51924114693">+51 924 114 693</a>',
+				icon: "tabler:headset",
+			},
+			{
+				title: "Location",
+				description: "Ayaselva E.I.R.L.<br>Carretera Yavari km 2<br>16311 Tamshiyacu<br>Peru",
+				icon: "tabler:map-pin",
+			},
+		]}
+	/>
+	)}
+
+	<WidgetWrapper id={formProps.id} isDark={false} containerClass="max-w-7xl mx-auto" bg="">
+		<div id="alert-container" class="my-4">  
+			<div class="alert alert-success text-center" set:html={intromessage}></div>
+		</div>
+	</WidgetWrapper>
+</Layout> 

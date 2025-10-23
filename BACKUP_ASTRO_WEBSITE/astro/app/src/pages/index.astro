@@ -1,0 +1,97 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Content from "~/components/widgets/Content.astro";
+import FAQs from "~/components/widgets/FAQs.astro";
+import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+
+const metadata = {
+    title: "Ayahuasca Healing Retreat in the Amazon - Ayaselva",
+    description:
+        "Discover Ayaselva in Tamshiyacu, a healing center offering transformative ayahuasca ceremonies with experienced indigenous healers. Join us in the serene Amazon jungle for a profound journey of energy, love, and adventure.",
+};
+---
+
+<Layout metadata={metadata}>
+    <Fragment slot="bg">
+        <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+
+    <Content
+        id="about"
+        columns={3}
+        isReversed={true}
+        items={[]}
+        image={{
+            src: "~/assets/images/maloca1.jpg",
+            alt: "Colorful Image",
+            loading: "eager",
+        }}
+    >
+        <Fragment slot="content">
+            <h1 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+                Ayahuasca Healing Center
+            </h1>
+            <button class="flex items-center px-4 py-2 text-white bg-[#28a745] rounded" onclick="openIframe()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6 mr-2">
+                    <path fill="currentColor" d="M5.53 2.13L0 7.75h5.53zm.398 0v5.62h7.608v3.65l5.47-4.45c-.014-1.22.031-2.25-.025-3.46c-.148-1.09-1.287-1.47-2.236-1.36zM23.1 4.32c-.802.295-1.358.995-2.047 1.49c-2.506 2.05-4.982 4.12-7.468 6.19c3.025 2.59 6.04 5.18 9.065 7.76c1.218.671 1.428-.814 1.328-1.64v-13a.83.83 0 0 0-.877-.825zM.038 8.15v7.7h5.53v-7.7zm13.577 8.1H6.008v5.62c3.864-.006 7.737.011 11.58-.009c1.02-.07 1.618-1.12 1.468-2.07v-2.51l-5.47-4.68v3.65zm-13.577 0c.02 1.44-.041 2.88.033 4.31c.162.948 1.158 1.43 2.047 1.31h3.464v-5.62z"/>
+                </svg>
+                Book Free Video Call consult
+            </button>
+
+            <FAQs columns="1" items={[
+                { title: "Intimate, personalized approach." },
+                { title: "Nurturing, supportive environment" },
+                { title: "15 years experience" },
+                { title: "Comfortable accommodations" },
+                { title: "Breathtaking location in the jungle near Iquitos, Peru"}
+            ]} />
+        </Fragment>
+    </Content>
+
+    <Content
+        id="about"
+        columns={3}
+        items={[]}
+        image={{
+            src: "~/assets/images/maloca2.jpg",
+            alt: "Colorful Image",
+            loading: "eager",
+        }}
+    >
+        <Fragment slot="content">
+            <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+                Our ayahuasca center is located in Tamshiyacu
+            </h2>
+            <p>
+                a location renowned for its serene and at the same time invigorating environment..
+            </p>
+            <br />
+            <p>
+                At Ayaselva, we are privileged to collaborate with indigenous healers from the Peruvian Amazon, who bring over 15 years of experience to our center. Our mission is to share this sacred medicine in a setting that resonates with energy, love, adventure, and learning.
+            </p>
+            <br />
+            <p>
+                Our team consists of seasoned practitioners who have been engaged with this transformative medicine for more than a decade. We invite you to join us on this extraordinary journey and experience the profound benefits of Ayahuasca at Ayaselva.
+            </p>
+        </Fragment>
+    </Content>
+
+    <BlogLatestPosts title="Blog" information={``} />
+
+    <Fragment>
+        <script is:inline>
+            function openIframe() {
+                const overlayHTML = 
+					 `<div id="iframeOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-auto">
+							<div class="bg-white relative w-11/12 h-5/6 max-w-full max-h-full rounded overflow-hidden" style="max-width: calc(896px + 32px + 8px + 8px); max-height: 734px;">
+								<button id="closeButton" class="absolute top-2 right-2 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center">×</button>
+								<iframe id="popupIframe" src="https://koalendar.com/e/ayaselva?embed=true" class="w-full h-full" frameborder="0"></iframe>
+							</div>
+						</div>`;
+                document.body.insertAdjacentHTML('beforeend', overlayHTML);
+                document.getElementById('closeButton').addEventListener('click', function() {
+                    document.getElementById('iframeOverlay').remove(); 
+                });
+            }
+        </script>
+</Layout>

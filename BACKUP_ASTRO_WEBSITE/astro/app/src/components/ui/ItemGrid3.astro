@@ -1,0 +1,107 @@
+---
+import type { ItemGrid as Props } from "~/types";
+import { Icon } from "astro-icon/components";
+import { twMerge } from "tailwind-merge";
+import Button from "./Button.astro";
+
+const {
+  items = [],
+  columns,
+  defaultIcon = "",
+  classes = {},
+} = Astro.props;
+
+const {
+  container: containerClass = "",
+  // container: containerClass = "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  panel: panelClass = "",
+  title: titleClass = "",
+  description: descriptionClass = "",
+  icon: defaultIconClass = "text-primary",
+} = classes;
+---
+
+<style>
+.underline-custom {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px; /* Adjust the line height */
+}
+</style>
+
+{
+  items && (
+    <div
+      class={twMerge(
+        `grid gap-8 gap-x-12 sm:gap-y-8 ${
+          columns === 4
+            ? "lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2"
+            : columns === 3
+            ? "lg:grid-cols-3 sm:grid-cols-2"
+            : columns === 2
+            ? "sm:grid-cols-2 "
+            : ""
+        }`,
+        containerClass
+      )}
+    >
+      {items.map(
+        ({
+          title,
+          description,
+          icon,
+          classes: itemClasses = {},
+        }) => (
+          <div
+            class={twMerge(
+              "relative flex flex-col",
+              panelClass,
+              itemClasses?.panel
+            )}
+          >
+            <div class="flex">
+              <div class="flex-grow">
+                <div
+                  class={twMerge(
+                    "text-xl font-bold",
+                    titleClass,
+                    itemClasses?.title
+                  )}
+                >
+                  {title}
+                </div>
+                {description && (
+                  <p
+                    class={twMerge(
+                      "text-muted mt-2",
+                      descriptionClass,
+                      itemClasses?.description
+                    )}
+                  >
+                    {typeof description === "string" && description.includes('<a') ? (
+                      <span set:html={description} class="underline-custom" />
+                    ) : (
+                      <span set:html={description} />
+                    )}
+                  </p>
+                )}
+              </div>
+              {(icon || defaultIcon) && (
+                <div class="ml-2 flex items-start">
+                  <Icon
+                    name={icon || defaultIcon}
+                    class={twMerge(
+                      "w-10 h-10",
+                      defaultIconClass,
+                      itemClasses?.icon
+                    )}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      )}
+    </div>
+  )
+}

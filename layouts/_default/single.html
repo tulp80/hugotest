@@ -1,7 +1,24 @@
 {{ define "main" }}
-  <article class="single">
-    <h1>{{ .Title }}</h1>
-    {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 2, 2006" }}</time>{{ end }}
-    <div class="content">{{ .Content }}</div>
-  </article>
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__layout">
+      <div class="hero__content">
+        {{ with .Params.tagline }}
+          <p class="hero__tagline">{{ . }}</p>
+        {{ end }}
+        <h1 class="hero__title">{{ .Title }}</h1>
+        {{ with .Params.summary }}
+          <p class="hero__text">{{ . }}</p>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="markdown">
+        {{ .Content }}
+      </div>
+    </div>
+  </section>
 {{ end }}

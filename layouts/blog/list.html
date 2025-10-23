@@ -1,0 +1,52 @@
+{{ define "main" }}
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__layout">
+      <div class="hero__content">
+        <p class="hero__tagline">Blog</p>
+        <h1 class="hero__title">{{ .Title }}</h1>
+        {{ with .Params.description }}<p class="hero__text">{{ . }}</p>{{ else }}
+          <p class="hero__text">Stories and insights from AyaSelva Healing Center.</p>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {{ $paginator := .Paginate (.Pages.ByDate.Reverse) }}
+      <div class="blog-grid">
+        {{ range $paginator.Pages }}
+          <article class="blog-card">
+            {{ with .Params.image }}
+              <div class="blog-card__media"><img src="{{ . }}" alt="{{ $.Title }}" loading="lazy"></div>
+            {{ end }}
+            <div class="blog-card__body">
+              <div class="blog-card__meta">{{ .Date.Format "02 Jan 2006" }}</div>
+              <h3 class="blog-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              {{ with .Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
+              <a class="blog-card__link" href="{{ .RelPermalink }}">Read more →</a>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+
+      {{ template "pagination" $paginator }}
+    </div>
+  </section>
+{{ end }}
+
+{{ define "pagination" }}
+  {{ with . }}
+    {{ if gt .TotalPages 1 }}
+      <nav aria-label="Pagination" style="display:flex; justify-content:center; gap:1rem; margin-top:2.5rem;">
+        {{ if .HasPrev }}
+          <a class="btn btn--ghost" href="{{ .Prev.URL }}">Previous</a>
+        {{ end }}
+        {{ if .HasNext }}
+          <a class="btn btn--ghost" href="{{ .Next.URL }}">Next</a>
+        {{ end }}
+      </nav>
+    {{ end }}
+  {{ end }}
+{{ end }}

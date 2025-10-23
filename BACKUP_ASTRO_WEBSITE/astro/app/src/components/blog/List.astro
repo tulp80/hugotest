@@ -1,0 +1,27 @@
+---
+import Item from '~/components/blog/ListItem.astro';
+import type { Post } from '~/types';
+
+export interface Props {
+  posts: Array<Post>;
+}
+
+const { posts } = Astro.props;
+
+const extractNumber = permalink => {
+  const match = permalink.match(/blog(\d+)-/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+const sortedPosts = posts.sort((a, b) => extractNumber(b.permalink) - extractNumber(a.permalink));
+---
+
+<ul>
+  {
+    sortedPosts.map((post) => (
+      <li class="mb-12 md:mb-20">
+        <Item post={post} />
+      </li>
+    ))
+  }
+</ul>

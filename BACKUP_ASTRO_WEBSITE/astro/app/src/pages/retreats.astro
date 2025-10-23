@@ -1,0 +1,129 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Content from "~/components/widgets/Content.astro";
+import Hero from "~/components/widgets/Hero.astro";
+const metadata = { title: "Retreats", description: "Experience personalized healing at AyaSelva Healing Center in the Peruvian Amazon. We offer 12-day and 7-day retreats with ayahuasca ceremonies, jungle walks, and meditation. Limited to 8 guests for individual attention. Enjoy comfortable accommodations, nutritious meals, and fast internet. Feel at home in a safe, supportive environment." };
+---
+
+<Layout metadata={metadata}>
+	<Hero tagline="What to expect">
+		<Fragment slot="title">What to expect<br /> </Fragment>
+	</Hero>
+
+
+	<Content
+		id="Retreat"
+		columns={3}
+		isReversed={true}
+		items={[]}
+		image={{
+			src: "~/assets/images/smoke.jpg",
+			alt: "Colorful Image",
+			loading: "eager",
+		}}
+	>
+		<Fragment slot="content">
+		<p><strong>Retreat options</strong><br>
+			We offer a 12-day program and a 7-day program for people with less time available. The 12-day program consists of 7 ayahuasca ceremonies, whereas the 7-day option has 4 ceremonies. During the retreat, both individual and group meetings will be held to provide guidance to our guests. After every ceremony, there will be a sharing circle where we go over the experience. The curandero will share his insights gathered during the ceremonies and provide practical suggestions for our guests.<br>
+			Apart from the ayahuasca ceremonies, you can expect jungle walks, flower baths, meditation sessions, an introduction to rapé medicine, a fire ceremony, learning to cook ayahuasca, along with other activities.</p>
+		</br>
+		<p><strong>Experience Personalized Healing</strong><br>
+			Our ayahuasca center offers an intimate and personalized experience with a limited guest capacity of 8 people. This ensures that each participant receives individual attention and a more meaningful journey in a serene and supportive environment.</p>
+		</br>
+
+		</Fragment>
+
+		<Fragment slot="bg">
+			<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+		</Fragment>
+	</Content>
+
+
+
+
+
+	<Content
+	id="about"
+	columns={3}
+	items={[]}
+	image={{
+		src: "~/assets/images/amazon_river.jpg",
+		alt: "Colorful Image",
+		loading: "eager",
+	}}
+>
+	<Fragment slot="content">
+		<!-- <h2
+			class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2"
+		>
+			Our center is located in Tamshiyacu
+		</h2> -->
+		<p><strong>Upon arrival</strong><br>
+			Since traveling all the way to Peru is taxing as it is, we will pick you up at Iquitos airport and bring you to either a comfortable hotel or to our center in Tamshiyacu, depending on your flight schedule. Our aim is to let our guests feel comfortable and welcomed. We will have a brief meeting in Iquitos where we will go over some practical details before we travel by boat to Tamshiyacu. By motokar, we will drive to the center where you can settle down. After lunch, we will have an introduction meeting where the program will be explained in detail. Ayaselva is located in the middle of the jungle but close enough to the town for any potential emergency.</p>
+		</br>
+	</Fragment>
+
+	<Fragment slot="bg">
+		<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+	</Fragment>
+</Content>
+
+
+
+<Content
+id="about"
+columns={3}
+isReversed={true}
+items={[]}
+image={{
+	src: "~/assets/images/room.jpg",
+	alt: "Colorful Image",
+	loading: "eager",
+}}
+>
+<Fragment slot="content">
+	<!-- <h2
+		class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2"
+	>
+		Our center is located in Tamshiyacu
+	</h2> -->
+	<p><strong>Accommodation</strong><br>
+		You will be sleeping in a spacious private room equipped with electricity for charging electronic devices.</p>
+	</br>
+	<p><strong>Electronics and Internet</strong><br>
+		We encourage our guests to limit the use of electronic devices. Excessive use can hinder people from making meaningful connections with others. By reducing screen time, we foster a more engaging and interactive environment, allowing guests to fully experience and enjoy their surroundings and interactions. We do, however, offer fast internet since we understand the importance of staying connected. Guests are welcome to use the internet for essential activities such as video calling, keeping in touch with family and friends, or necessary work tasks. We strive to balance connectivity with a mindful approach to technology use.</p>
+	</br>
+</Fragment>
+
+<Fragment slot="bg">
+	<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+</Fragment>
+</Content>
+
+
+
+
+	<Content
+		id="Retreat"
+		columns={3}
+		items={[]}
+		image={{
+			src: "~/assets/images/food.jpg",
+			alt: "Colorful Image",
+			loading: "eager",
+		}}
+	>
+		<Fragment slot="content">
+		<!-- <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-5xl mb-2">What to expect</h2> -->
+		<p><strong>Food</strong><br>
+			On ceremony days, 2 meals, and on non-ceremony days, 3 meals will be served. The meals will be catered to the preferences of our guests, though our chef adheres to specific standards concerning ayahuasca.</p>
+		</br>
+			<p>Ayaselva is a safe place where you can feel at home. We want you to feel at ease here and place your trust in the sacred plants and the maestro. Together, we can help each other with our love and compassion.</p>				
+
+		</Fragment>
+
+		<Fragment slot="bg">
+			<div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+		</Fragment>
+	</Content>
+</Layout>

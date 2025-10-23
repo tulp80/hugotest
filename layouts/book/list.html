@@ -1,0 +1,42 @@
+{{ define "main" }}
+  {{ partial "page-hero.html" . }}
+
+  <section class="section">
+    <div class="container">
+      {{ with .Params.intro }}<div class="markdown" style="text-align:center; margin-bottom:2rem;">{{ . | markdownify }}</div>{{ end }}
+
+      {{ $today := time (now.Format "2006-01-02") }}
+      {{ $scratch := newScratch }}
+      {{ $scratch.Set "periods" (slice) }}
+      {{ range site.Data.retreats.periods }}
+        {{ $start := time .startDate }}
+        {{ if ge $start $today }}
+          {{ $scratch.Add "periods" (slice (dict "item" . "start" $start)) }}
+        {{ end }}
+      {{ end }}
+      {{ $periods := sort ($scratch.Get "periods") "start" }}
+
+      <div class="pricing-table">
+        {{ range $periods }}
+          {{ $entry := .item }}
+          <div class="pricing-row" data-status="{{ if not $entry.available }}closed{{ end }}">
+            <div class="pricing-row__title">{{ $entry.title }}</div>
+            <div class="pricing-row__meta">
+              <div>{{ $entry.included }}</div>
+              <div>{{ $entry.period }}</div>
+            </div>
+            <div class="pricing-row__meta">{{ $entry.days }}</div>
+            <div class="pricing-row__meta">{{ if $entry.price }}$ {{ $entry.price }}{{ else }}On request{{ end }}</div>
+            <div class="pricing-row__cta">
+              {{ if $entry.available }}
+                <a class="btn btn--ghost" href="{{ relLangURL (printf "/forms/booking-form/?retreatId=%s" $entry.id) }}">Book now</a>
+              {{ else }}
+                <span style="color:var(--color-muted); font-weight:600;">Fully booked</span>
+              {{ end }}
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+{{ end }}

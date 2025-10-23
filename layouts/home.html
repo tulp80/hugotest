@@ -1,0 +1,76 @@
+{{ define "main" }}
+  {{ $hero := .Params.hero }}
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__layout">
+      <div class="hero__content">
+        {{ with $hero.tagline }}<p class="hero__tagline">{{ . }}</p>{{ end }}
+        <h1 class="hero__title">{{ $hero.title | default .Title }}</h1>
+        {{ with $hero.description }}<p class="hero__text">{{ . }}</p>{{ end }}
+        <div class="badge-list">
+          {{ range $hero.highlights }}
+            <span class="badge-list__item"><span class="badge-list__icon">✓</span>{{ . }}</span>
+          {{ end }}
+        </div>
+        {{ with $hero.button }}
+          <div>
+            <a class="btn btn--accent" href="{{ .url }}">{{ .text }}</a>
+          </div>
+        {{ end }}
+      </div>
+      {{ with $hero.image }}
+        <div class="hero__media">
+          <img src="{{ . }}" alt="{{ $hero.image_alt | default "Ayaselva" }}" loading="eager">
+        </div>
+      {{ end }}
+    </div>
+  </section>
+
+  {{ range .Params.sections }}
+    {{ $section := . }}
+    <section class="section">
+      <div class="container">
+        <div class="split{{ if $section.reverse }} split--reverse{{ end }}">
+          <div class="split__text">
+            <h2>{{ $section.title }}</h2>
+            {{ range $section.paragraphs }}<p>{{ . }}</p>{{ end }}
+          </div>
+          {{ with $section.image }}
+            <div class="split__media">
+              <img src="{{ . }}" alt="{{ $section.image_alt | default "Ayaselva" }}" loading="lazy">
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+  {{ end }}
+
+  {{ $blog := .Params.blog }}
+  {{ $posts := first 3 (sort (where .Site.RegularPages "Section" "blog") "Date" "desc") }}
+  {{ if gt (len $posts) 0 }}
+    <section class="section section--accent">
+      <div class="container">
+        <h2 class="section__title">{{ $blog.title | default "Blog" }}</h2>
+        {{ with $blog.subtitle }}<p class="section__subtitle">{{ . }}</p>{{ end }}
+        <div class="blog-grid">
+          {{ range $posts }}
+            <article class="blog-card">
+              {{ with .Params.image }}
+                <div class="blog-card__media"><img src="{{ . }}" alt="{{ $.Title }}" loading="lazy"></div>
+              {{ end }}
+              <div class="blog-card__body">
+                <div class="blog-card__meta">{{ .Date.Format "02 Jan 2006" }}</div>
+                <h3 class="blog-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                {{ with .Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
+                <a class="blog-card__link" href="{{ .RelPermalink }}">Read more →</a>
+              </div>
+            </article>
+          {{ end }}
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+          <a class="btn btn--primary" href="{{ relLangURL "/blog/" }}">View all posts</a>
+        </div>
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

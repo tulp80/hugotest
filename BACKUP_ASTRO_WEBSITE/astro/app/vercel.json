@@ -1,0 +1,25 @@
+{
+"cleanUrls": true,
+"trailingSlash": false,
+"redirects": [
+	{
+		"source": "/:path*",
+		"has": [
+			{ "type": "host", "value": "ayaselva.com" }
+		],
+		"destination": "https://www.ayaselva.com/:path*",
+		"permanent": true
+	}
+],
+"headers": [
+	{
+		"source": "/_astro/(.*)",
+		"headers": [
+		{
+			"key": "Cache-Control",
+			"value": "public, max-age=31536000, immutable"
+		}
+		]
+	}
+]
+}

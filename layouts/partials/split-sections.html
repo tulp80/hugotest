@@ -1,0 +1,36 @@
+{{ $sections := .Params.sections }}
+{{ if gt (len $sections) 0 }}
+  {{ range $sections }}
+    {{ $section := . }}
+    <section class="section">
+      <div class="container">
+        <div class="split{{ if $section.reverse }} split--reverse{{ end }}">
+          <div class="split__text">
+            {{ with $section.tagline }}
+              <p class="hero__tagline" style="letter-spacing:0.25em;">{{ . }}</p>
+            {{ end }}
+            <h2>{{ $section.title }}</h2>
+            {{ with $section.subtitle }}
+              <p class="hero__text">{{ . }}</p>
+            {{ end }}
+            {{ range $section.paragraphs }}
+              <p>{{ . }}</p>
+            {{ end }}
+            {{ with $section.list }}
+              <ul class="faq-list">
+                {{ range . }}
+                  <li class="faq-item">{{ . }}</li>
+                {{ end }}
+              </ul>
+            {{ end }}
+          </div>
+          {{ with $section.image }}
+            <div class="split__media">
+              <img src="{{ .src | default . }}" alt="{{ $section.image.alt | default $section.title }}" loading="lazy">
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

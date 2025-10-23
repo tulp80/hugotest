@@ -1,0 +1,145 @@
+---
+import FormContainer from '~/components/ui/Form.astro';
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import type { Contact as Props } from '~/types';
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  inputs,
+  textarea,
+  disclaimer,
+  approval,
+  button,
+  description,
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+
+const fullUrl = Astro.request.url;
+const url = new URL(fullUrl);
+const params = new URLSearchParams(url.search);
+
+const success = params.get('success') === 'true';
+const error = params.get('error') === 'true';
+
+console.log('.........');
+console.log(success);
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+
+  {success && (
+    <div class="alert alert-success text-center">
+      <p>Thank you for your message! We will get back to you within 24 hours.</p>
+    </div>
+  )}
+
+  {error && (
+    <div class="alert alert-error text-center">
+      <p>There was an error sending your message. Please ensure all fields are filled out correctly.</p>
+    </div>
+  )}
+
+  {!success && (
+    <div class="flex flex-col max-w-xl mx-auto rounded-lg backdrop-blur border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 shadow p-4 sm:p-6 lg:p-8 w-full">
+      <form id="contactForm" action="/emailversturen" method="post">
+        <div class="error-messages text-red-500 mb-4 text-center"></div>
+        <FormContainer
+          inputs={inputs}
+          textarea={textarea}
+          disclaimer={disclaimer}
+			 approval={approval}
+          button={button}
+          description={description}
+        />
+        <button type="submit" id="submitButton" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 flex items-center justify-center">
+          <span id="spinner" class="hidden ml-2">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+          </span>
+        </button>
+      </form>
+    </div>
+  )}
+</WidgetWrapper>
+
+<script>
+  function validateForm(event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement | null;
+    const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+    const messageInput = form.querySelector('textarea[name="message"]') as HTMLTextAreaElement | null;
+
+    if (!nameInput || !emailInput || !messageInput) {
+      console.error('Form elements not found');
+      return;
+    }
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const message = messageInput.value.trim();
+    const errorMessages: string[] = []; // Explicitly type the array as an array of strings
+
+    if (!name) {
+      errorMessages.push('Name is required');
+    }
+    if (!email) {
+      errorMessages.push('Email is required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorMessages.push('Invalid email address');
+    }
+    if (!message) {
+      errorMessages.push('Message is required');
+    }
+
+    const errorContainer = form.querySelector('.error-messages');
+    if (errorContainer) {
+      errorContainer.innerHTML = '';
+      if (errorMessages.length > 0) {
+        errorMessages.forEach(msg => {
+          const errorElement = document.createElement('div');
+          errorElement.textContent = msg;
+          errorContainer.appendChild(errorElement);
+        });
+      } else {
+        disableButton();
+        form.submit();
+      }
+    }
+  }
+
+  function disableButton() {
+    const submitButton = document.getElementById('submitButton') as HTMLButtonElement | null;
+    const buttonText = document.getElementById('buttonText') as HTMLElement | null;
+    const spinner = document.getElementById('spinner') as HTMLElement | null;
+
+    if (submitButton && buttonText && spinner) {
+      submitButton.disabled = true;
+      buttonText.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      // Re-enable the button after 10 seconds if the form is not submitted
+      setTimeout(() => {
+        submitButton.disabled = false;
+        buttonText.classList.remove('hidden');
+        spinner.classList.add('hidden');
+      }, 10000);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm') as HTMLFormElement | null;
+    if (form) {
+      form.addEventListener('submit', validateForm);
+    }
+  });
+</script>

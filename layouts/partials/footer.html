@@ -1,3 +1,35 @@
+{{ $footer := .Site.Data.navigation.footer }}
 <footer class="site-footer">
-  <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }}. Built with Hugo.</p>
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <h3>{{ .Site.Title }}</h3>
+      <p>Transformative ayahuasca retreats guided by experienced indigenous healers in Tamshiyacu, Peru.</p>
+    </div>
+
+    <div class="site-footer__columns">
+      <div>
+        <div class="site-footer__column-title">Visit</div>
+        <div class="site-footer__meta">
+          {{ range $footer.address_lines }}<div>{{ . }}</div>{{ end }}
+        </div>
+      </div>
+      <div>
+        <div class="site-footer__column-title">Contact</div>
+        <div class="site-footer__meta">
+          <div><a class="site-footer__link" href="mailto:{{ $footer.contact.email }}">{{ $footer.contact.email }}</a></div>
+          <div><a class="site-footer__link" href="{{ $footer.contact.phone_url }}">{{ $footer.contact.phone }}</a></div>
+        </div>
+      </div>
+      <div>
+        <div class="site-footer__column-title">Explore</div>
+        <div class="site-footer__meta">
+          {{ range $footer.legal_links }}
+            <div><a class="site-footer__link" href="{{ .url | relLangURL }}">{{ .text }}</a></div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
+    <div class="site-footer__meta">© {{ now.Format "2006" }} {{ .Site.Title }} · All rights reserved.</div>
+  </div>
 </footer>

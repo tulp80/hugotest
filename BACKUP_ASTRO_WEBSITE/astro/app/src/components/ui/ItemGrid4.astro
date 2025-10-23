@@ -1,0 +1,45 @@
+---
+import type { ItemGrid as Props } from '~/types';
+import { twMerge } from 'tailwind-merge';
+import Button from './Button.astro';
+import { Icon } from 'astro-icon/components';
+
+const { items = [], columns, defaultIcon = '', classes = {} } = Astro.props;
+
+const {
+  container: containerClass = '',
+  panel: panelClass = '',
+  title: titleClass = '',
+  description: descriptionClass = '',
+  icon: defaultIconClass = 'text-primary',
+  action: actionClass = '',
+} = classes;
+---
+
+{
+  items && (
+    <div class={twMerge(``, containerClass)}>
+        <ul style="list-style-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;1em&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;1em&quot; class=&quot;mr-2 flex-shrink-0 h-6 mt-1 rtl:ml-2 rtl:mr-0 text-primary w-6&quot; data-icon=&quot;tabler:chevron-right&quot; style=&quot;color:#fff&quot;><path d=&quot;m9 6l6 6-6 6&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot;/></svg>');">
+        {items.map(({ title, description, icon, callToAction, classes: itemClasses = {} }) => (
+          <li class={twMerge('flex flex-row max-w-md', panelClass, itemClasses?.panel)}>
+              <div class="flex justify-center">
+                {(icon || defaultIcon) && (
+                  <Icon
+                    name={icon || defaultIcon}
+                    class={twMerge('w-7 h-7 mr-2 rtl:mr-0 rtl:ml-2', defaultIconClass, itemClasses?.icon)}
+                    style={{ color: '#FFFFFF' }}
+                  />
+                )}
+                {title && <div class={twMerge('text-m font-bold', titleClass, itemClasses?.title)} style={{ color: '#94A3B8' }}>{title}</div>}
+                {callToAction && (
+                  <div class={twMerge(`${title || description ? 'mt-3' : ''}`, actionClass, itemClasses?.actionClass)}>
+                    <Button variant="link" {...callToAction} />
+                  </div>
+                )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

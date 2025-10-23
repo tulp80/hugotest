@@ -1,0 +1,35 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import ItemGrid from '~/components/ui/ItemGrid4.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import type { Faqs as Props } from '~/types';
+
+const {
+  title = '',
+  subtitle = '',
+  tagline = '',
+  items = [],
+  columns = 2,
+
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+--- 
+<!-- <ul class="circle"><li>111</li><li>222</li></ul> -->
+
+<!-- <ul style="list-style-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;1em&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;1em&quot; class=&quot;mr-2 flex-shrink-0 h-6 mt-1 rtl:ml-2 rtl:mr-0 text-primary w-6&quot; data-icon=&quot;tabler:chevron-right&quot; style=&quot;color:#fff&quot;><path d=&quot;m9 6l6 6-6 6&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot;/></svg>');"> -->
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <!-- <Headline title={title} subtitle={subtitle} tagline={tagline} /> -->
+  <ItemGrid
+    items={items}
+    columns={columns}
+    defaultIcon="tabler:chevron-right"
+    classes={{
+      container: `${columns === 1 ? 'max-w-4xl' : ''} gap-y-8 md:gap-y-2`,
+      panel: 'max-w-none',
+      icon: 'flex-shrink-0 mt-1 w-6 h-6 text-primary',
+    }}
+  />
+</WidgetWrapper> 

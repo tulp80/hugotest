@@ -1,0 +1,38 @@
+header:
+  links:
+    - text: "Home"
+      url: "/"
+    - text: "Center"
+      url: "/thecenter/"
+    - text: "Retreat"
+      url: "/retreats/"
+    - text: "Team"
+      url: "/team/"
+    - text: "Gallery"
+      url: "/gallery/"
+    - text: "Health Guidelines"
+      url: "/health-guidelines/"
+    - text: "Blog"
+      url: "/blog/"
+    - text: "Pricing & Booking"
+      url: "/book/"
+    - text: "Contact"
+      url: "/forms/contact/"
+  cta:
+    text: "Book a Call"
+    url: "https://koalendar.com/e/ayaselva"
+
+footer:
+  address_lines:
+    - "Ayaselva E.I.R.L."
+    - "Carretera Yavari km 2"
+    - "16311 Tamshiyacu, Peru"
+  contact:
+    phone: "+51 924 114 693"
+    phone_url: "https://wa.me/51924114693"
+    email: "info@ayaselva.com"
+  legal_links:
+    - text: "Pricing & Booking"
+      url: "/book/"
+    - text: "Health Guidelines"
+      url: "/health-guidelines/"

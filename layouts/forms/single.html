@@ -1,0 +1,124 @@
+{{ define "main" }}
+  {{ partial "page-hero.html" . }}
+
+  {{ $form := .Params.form }}
+  {{ $action := $form.action | default "https://formsubmit.co/info@ayaselva.com" }}
+  {{ $method := $form.method | default "post" }}
+  {{ $today := time (now.Format "2006-01-02") }}
+  {{ $scratch := newScratch }}
+  {{ $scratch.Set "retreats" (slice) }}
+  {{ range site.Data.retreats.periods }}
+    {{ $start := time .startDate }}
+    {{ if ge $start $today }}
+      {{ if .available }}
+        {{ $scratch.Add "retreats" (slice (dict "id" .id "title" .title "period" .period "days" .days "price" .price "included" .included)) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $retreats := $scratch.Get "retreats" }}
+
+  <section class="section">
+    <div class="container">
+      <div class="form-wrapper">
+        {{ with $form.intro }}<div class="notice">{{ . | markdownify }}</div>{{ end }}
+
+        <form class="form-grid" action="{{ $action }}" method="{{ $method }}">
+          <input type="hidden" name="_subject" value="{{ $form.subject | default (printf "%s form submission" .Title) }}">
+          <input type="hidden" name="Form" value="{{ .Title }}">
+
+          {{ range $index, $field := $form.fields }}
+            <div class="form-field">
+              <label for="field-{{ anchorize $field.name }}">{{ $field.label | default $field.name }}</label>
+              <input
+                id="field-{{ anchorize $field.name }}"
+                name="{{ $field.name }}"
+                type="{{ $field.type | default "text" }}"
+                placeholder="{{ $field.placeholder }}"
+                {{ if $field.autocomplete }}autocomplete="{{ $field.autocomplete }}"{{ end }}
+                {{ if $field.required | default true }}required{{ end }}
+              >
+            </div>
+          {{ end }}
+
+          {{ with $form.retreat_selector }}
+            {{ if gt (len $retreats) 0 }}
+              <div class="form-field">
+                <label for="retreat-select">Select retreat</label>
+                <select id="retreat-select" name="Retreat" required>
+                  <option value="">Choose your retreat</option>
+                  {{ range $retreats }}
+                    <option value="{{ .id }}" data-title="{{ .title }}" data-period="{{ .period }}" data-days="{{ .days }}" data-price="{{ .price }}">{{ printf "%s • %s" .period (cond .price (printf "$ %s" .price) "On request") }}</option>
+                  {{ end }}
+                </select>
+                <input type="hidden" name="Retreat details" id="retreat-summary-input">
+                <p class="form-help" id="retreat-summary">Choose a retreat to see pricing details.</p>
+              </div>
+            {{ end }}
+          {{ end }}
+
+          {{ with $form.textarea }}
+            <div class="form-field">
+              <label for="field-{{ anchorize .name }}">{{ .label | default .name }}</label>
+              <textarea
+                id="field-{{ anchorize .name }}"
+                name="{{ .name }}"
+                rows="6"
+                placeholder="{{ .placeholder }}"
+                {{ if .required | default false }}required{{ end }}
+              ></textarea>
+            </div>
+          {{ end }}
+
+          {{ with $form.approval }}
+            <div class="form-checkbox">
+              <input type="checkbox" id="approval" name="Approval" value="Yes" {{ if .required | default true }}required{{ end }}>
+              <label for="approval">{{ .label }}</label>
+            </div>
+          {{ end }}
+
+          <button class="btn btn--primary" type="submit">{{ $form.submitText | default "Send" }}</button>
+        </form>
+      </div>
+    </div>
+  </section>
+{{ end }}
+
+{{ define "scripts" }}
+  {{ $form := .Params.form }}
+  {{ with $form.retreat_selector }}
+    <script>
+      (function () {
+        const select = document.getElementById('retreat-select');
+        const summary = document.getElementById('retreat-summary');
+        const summaryInput = document.getElementById('retreat-summary-input');
+        if (!select || !summary) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const selectedId = params.get('retreatId');
+
+        const updateSummary = () => {
+          const option = select.options[select.selectedIndex];
+          if (!option || !option.dataset) {
+            summary.textContent = 'Choose a retreat to see pricing details.';
+            if (summaryInput) summaryInput.value = '';
+            return;
+          }
+          const { title, period, days, price } = option.dataset;
+          const text = `${title || 'Retreat'} • ${period || ''} • ${days || ''} • ${price ? '$ ' + price : 'On request'}`;
+          summary.textContent = text;
+          if (summaryInput) summaryInput.value = text;
+        };
+
+        select.addEventListener('change', updateSummary);
+
+        if (selectedId) {
+          const match = Array.from(select.options).find(opt => opt.value === selectedId);
+          if (match) {
+            select.value = selectedId;
+            updateSummary();
+          }
+        }
+      }());
+    </script>
+  {{ end }}
+{{ end }}

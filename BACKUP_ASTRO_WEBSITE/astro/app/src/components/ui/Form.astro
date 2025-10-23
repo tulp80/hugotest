@@ -1,0 +1,173 @@
+---
+export const prerender = false;
+import type { Form as Props } from "~/types";
+import Button from "~/components/ui/Button.astro";
+
+const {
+  inputs,
+  textarea,
+  disclaimer,
+  approval,
+  button = "Contact us",
+  description = "",
+} = Astro.props;
+
+const retreatsAll = {
+	periods: [
+	
+	],
+}
+
+const periods=retreatsAll?.periods 
+
+
+let retreat;
+const retreatId = Astro.url.searchParams.get('retreatId');
+
+
+if (retreatId) {
+	const periods = retreatsAll.periods;
+   retreat = periods.find(period => period.id === retreatId);
+}
+
+---
+{
+	retreatId &&
+		<div class="m-0 p-0 pb-6">
+			<div class="font-bold text-lg">Selected retreat</div>
+			<div>
+				 <div class="block text-sm font-medium">
+					  <span>Period:</span>
+					  <span class="ml-2">{retreat.period} &nbsp; &nbsp; ({retreat.days})</span>
+				 </div>
+				 <div class="block text-sm font-medium">
+					  <span>Price: &nbsp; &nbsp;</span>
+					  <span class="ml-2">$ {retreat.price}</span>
+				 </div>
+			</div>
+	  	</div>
+}
+  
+{
+	inputs &&
+	inputs.map(
+		({
+			type = "text",
+			name,
+			label = "",
+			autocomplete = "off",
+			placeholder = "",
+			value = "",
+		}) =>
+			name && (
+			<div class="mb-6">
+				{label && (
+					<label for={name} class="block text-sm font-medium">
+					{label}
+					</label>
+				)}
+				<input 
+					autocomplete="off"
+					type={type}
+					name={name}
+					id={name}
+					placeholder={placeholder}
+					value={value}
+					class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+				/>
+			</div>
+			)
+	)
+}
+
+  {
+    textarea && (
+      <div>
+        <label for="textarea" class="block text-sm font-medium">
+          {textarea.label}
+        </label>
+        <textarea
+          id="textarea"
+          name={textarea.name ? textarea.name : "message"}
+			 placeholder={textarea.placeholder ? textarea.placeholder : ""}
+          rows={textarea.rows ? textarea.rows : 5}
+          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900">{textarea.value ? textarea.value : ""}</textarea>
+      </div>
+    )
+  }
+
+  {
+    disclaimer && (
+      <div class="mt-3 flex items-start">
+        <div class="flex mt-0.5">
+          <input
+            id="disclaimer"
+            name="disclaimer"
+            type="checkbox"
+            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          />
+        </div>
+        <div class="ml-3">
+          <label
+            for="disclaimer"
+            class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
+            {disclaimer.label}
+          </label>
+        </div>
+      </div>
+    )
+  }
+
+{
+	approval && (
+	  <div class="mt-3 flex items-start">
+		 <div class="flex mt-0.5">
+			<input
+			  checked={approval.checked}
+			  id="approval"
+			  name={approval.name}
+			  type="checkbox"
+			  class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+			/>
+		 </div>
+		 <div class="ml-3">
+			<label
+			  for="approval"
+			  class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
+			  {/* {approval.label} */}
+			  By ticking the checkbox and submitting this booking, you acknowledge that you have read and accepted the <a href="/health-guidelines" class="underline font-bold" target="_blank">Health Guidelines</a>
+			</label>
+		 </div>
+	  </div>
+	)
+ }
+
+<!-- value={approval.value} -->
+
+
+<!-- 
+<input 
+type="hidden" 
+name={approval.name}
+value=""
+> -->
+
+
+  {
+    button && (
+      <div class="mt-10 grid">
+	<Button variant="primary" type="submit" onclick="this.disabled=true; this.form.submit(); setTimeout(() => { this.disabled = false; }, 10000);">
+		{button}
+	</Button>
+      </div>
+    )
+  }
+
+  {
+    description && (
+      <div class="mt-3 text-center">
+        <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      </div>
+    )
+  }
+</form>

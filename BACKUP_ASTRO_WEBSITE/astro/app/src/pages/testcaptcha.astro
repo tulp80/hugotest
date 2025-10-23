@@ -1,0 +1,37 @@
+---
+const GOOGLE_CAPTCHA_KEY 		= process.env.GOOGLE_CAPTCHA_KEY;
+---
+
+<html>
+	<head>
+		<script is:inline src="https://www.google.com/recaptcha/api.js?nocookie=1"></script>
+	</head>
+
+	<body>
+		<button class="g-recaptcha" data-sitekey=`${GOOGLE_CAPTCHA_KEY}` data-callback="onSubmit" data-action="submit"> Click me to verify the captcha challenge! </button>
+
+		<script is:inline>
+			function onSubmit(token) {
+				console.log('/api/recaptcha', {
+					method: 'POST',
+					body: JSON.stringify({ recaptcha: token })
+				});
+				fetch('/recaptcha', {
+					method: 'POST',
+					body: JSON.stringify({ recaptcha: token })
+				})
+					.then(response => response.json())
+					.then(gResponse => {
+						console.log(gResponse);
+						if (gResponse.success) {
+							// Captcha verification was a success
+							// test
+						} else {
+							// test2
+							// Captcha verification failed
+						}
+					});
+			}
+		</script>
+	</body>
+</html>
