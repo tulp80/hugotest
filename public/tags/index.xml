@@ -2,115 +2,115 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Ayaselva</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://www.ayaselva.com/tags/</link>
     <description>Recent content in Tags on Ayaselva</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 09 Jul 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.ayaselva.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ayahuasca</title>
-      <link>http://localhost:1313/tags/ayahuasca/</link>
+      <link>https://www.ayaselva.com/tags/ayahuasca/</link>
       <pubDate>Tue, 09 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ayahuasca/</guid>
+      <guid>https://www.ayaselva.com/tags/ayahuasca/</guid>
       <description></description>
     </item>
     <item>
       <title>Health</title>
-      <link>http://localhost:1313/tags/health/</link>
+      <link>https://www.ayaselva.com/tags/health/</link>
       <pubDate>Tue, 09 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/health/</guid>
+      <guid>https://www.ayaselva.com/tags/health/</guid>
       <description></description>
     </item>
     <item>
       <title>Scientific</title>
-      <link>http://localhost:1313/tags/scientific/</link>
+      <link>https://www.ayaselva.com/tags/scientific/</link>
       <pubDate>Tue, 09 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/scientific/</guid>
+      <guid>https://www.ayaselva.com/tags/scientific/</guid>
       <description></description>
     </item>
     <item>
       <title>Culture</title>
-      <link>http://localhost:1313/tags/culture/</link>
+      <link>https://www.ayaselva.com/tags/culture/</link>
       <pubDate>Fri, 05 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/culture/</guid>
+      <guid>https://www.ayaselva.com/tags/culture/</guid>
       <description></description>
     </item>
     <item>
       <title>Tradition</title>
-      <link>http://localhost:1313/tags/tradition/</link>
+      <link>https://www.ayaselva.com/tags/tradition/</link>
       <pubDate>Fri, 05 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/tradition/</guid>
+      <guid>https://www.ayaselva.com/tags/tradition/</guid>
       <description></description>
     </item>
     <item>
       <title>Science</title>
-      <link>http://localhost:1313/tags/science/</link>
+      <link>https://www.ayaselva.com/tags/science/</link>
       <pubDate>Tue, 25 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/science/</guid>
+      <guid>https://www.ayaselva.com/tags/science/</guid>
       <description></description>
     </item>
     <item>
       <title>Spirituality</title>
-      <link>http://localhost:1313/tags/spirituality/</link>
+      <link>https://www.ayaselva.com/tags/spirituality/</link>
       <pubDate>Tue, 25 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/spirituality/</guid>
+      <guid>https://www.ayaselva.com/tags/spirituality/</guid>
       <description></description>
     </item>
     <item>
       <title>Nature</title>
-      <link>http://localhost:1313/tags/nature/</link>
+      <link>https://www.ayaselva.com/tags/nature/</link>
       <pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/nature/</guid>
+      <guid>https://www.ayaselva.com/tags/nature/</guid>
       <description></description>
     </item>
     <item>
       <title>Travel</title>
-      <link>http://localhost:1313/tags/travel/</link>
+      <link>https://www.ayaselva.com/tags/travel/</link>
       <pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/travel/</guid>
+      <guid>https://www.ayaselva.com/tags/travel/</guid>
       <description></description>
     </item>
     <item>
       <title>Amazon</title>
-      <link>http://localhost:1313/tags/amazon/</link>
+      <link>https://www.ayaselva.com/tags/amazon/</link>
       <pubDate>Tue, 18 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/amazon/</guid>
+      <guid>https://www.ayaselva.com/tags/amazon/</guid>
       <description></description>
     </item>
     <item>
       <title>Tourism</title>
-      <link>http://localhost:1313/tags/tourism/</link>
+      <link>https://www.ayaselva.com/tags/tourism/</link>
       <pubDate>Tue, 18 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/tourism/</guid>
+      <guid>https://www.ayaselva.com/tags/tourism/</guid>
       <description></description>
     </item>
     <item>
       <title>Traditions</title>
-      <link>http://localhost:1313/tags/traditions/</link>
+      <link>https://www.ayaselva.com/tags/traditions/</link>
       <pubDate>Tue, 18 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/traditions/</guid>
+      <guid>https://www.ayaselva.com/tags/traditions/</guid>
       <description></description>
     </item>
     <item>
       <title>Centers</title>
-      <link>http://localhost:1313/tags/centers/</link>
+      <link>https://www.ayaselva.com/tags/centers/</link>
       <pubDate>Mon, 17 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/centers/</guid>
+      <guid>https://www.ayaselva.com/tags/centers/</guid>
       <description></description>
     </item>
     <item>
       <title>Healing</title>
-      <link>http://localhost:1313/tags/healing/</link>
+      <link>https://www.ayaselva.com/tags/healing/</link>
       <pubDate>Mon, 17 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/healing/</guid>
+      <guid>https://www.ayaselva.com/tags/healing/</guid>
       <description></description>
     </item>
     <item>
       <title>Hallucinogenic</title>
-      <link>http://localhost:1313/tags/hallucinogenic/</link>
+      <link>https://www.ayaselva.com/tags/hallucinogenic/</link>
       <pubDate>Sun, 16 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/hallucinogenic/</guid>
+      <guid>https://www.ayaselva.com/tags/hallucinogenic/</guid>
       <description></description>
     </item>
   </channel>

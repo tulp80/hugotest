@@ -47,7 +47,8 @@
                 <select id="retreat-select" name="Retreat" required>
                   <option value="">Choose your retreat</option>
                   {{ range $retreats }}
-                    <option value="{{ .id }}" data-title="{{ .title }}" data-period="{{ .period }}" data-days="{{ .days }}" data-price="{{ .price }}">{{ printf "%s • %s" .period (cond .price (printf "$ %s" .price) "On request") }}</option>
+                    {{- $price := .price -}}
+                    <option value="{{ .id }}" data-title="{{ .title }}" data-period="{{ .period }}" data-days="{{ .days }}" data-price="{{ .price }}">{{- if $price -}}{{ printf "%s • %s" .period (printf "$ %s" $price) }}{{- else -}}{{ printf "%s • %s" .period "On request" }}{{- end -}}</option>
                   {{ end }}
                 </select>
                 <input type="hidden" name="Retreat details" id="retreat-summary-input">
