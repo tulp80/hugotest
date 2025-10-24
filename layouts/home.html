@@ -1,10 +1,43 @@
+{{ define "head" }}
+  {{- $hero := .Params.hero -}}
+  {{- with $hero.image -}}
+    {{- $raw := . -}}
+    {{- $path := strings.TrimPrefix "/" $raw -}}
+    {{- $image := resources.GetMatch (printf "images/%s" $path) -}}
+    {{- if not $image -}}
+      {{- $image = resources.GetMatch (printf "images/%s" (path.Base $path)) -}}
+    {{- end -}}
+    {{- if $image -}}
+      {{- $sizes := "(min-width: 960px) 40vw, 88vw" -}}
+      {{- $candidates := slice 640 960 1280 -}}
+      {{- $widths := slice -}}
+      {{- range $candidates -}}
+        {{- if le . $image.Width -}}
+          {{- $widths = $widths | append . -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if not (gt (len $widths) 0) -}}
+        {{- $fallbackWidth := cond (gt $image.Width 1280) 1280 $image.Width -}}
+        {{- $widths = slice $fallbackWidth -}}
+      {{- end -}}
+      {{- $largestWidth := index $widths (sub (len $widths) 1) -}}
+      {{- $largest := $image.Resize (printf "%dx jpg" $largestWidth) -}}
+      {{- $srcset := slice -}}
+      {{- range $widths -}}
+        {{- $variant := cond (eq . $largestWidth) $largest ($image.Resize (printf "%dx jpg" .)) -}}
+        {{- $srcset = $srcset | append (printf "%s %dw" $variant.RelPermalink .) -}}
+      {{- end -}}
+      <link rel="preload" as="image" href="{{ $largest.RelPermalink }}" imagesrcset="{{ delimit $srcset ", " }}" imagesizes="{{ $sizes }}" fetchpriority="high">
+    {{- end -}}
+  {{- end -}}
+{{ end }}
+
 {{ define "main" }}
   {{ $hero := .Params.hero }}
   <section class="hero">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="container hero__layout">
       <div class="hero__content">
-        {{ with $hero.tagline }}<p class="hero__tagline">{{ . }}</p>{{ end }}
         <h1 class="hero__title">{{ $hero.title | default .Title }}</h1>
         {{ with $hero.description }}<p class="hero__text">{{ . }}</p>{{ end }}
         <div class="badge-list">
@@ -20,7 +53,7 @@
       </div>
       {{ with $hero.image }}
         <div class="hero__media">
-          {{ partial "responsive-image.html" (dict "src" . "alt" ($hero.image_alt | default "Ayaselva") "loading" "eager" "sizes" "(min-width: 960px) 40vw, 88vw") }}
+          {{ partial "responsive-image.html" (dict "src" . "alt" ($hero.image_alt | default "Ayaselva") "loading" "eager" "fetchpriority" "high" "sizes" "(min-width: 960px) 40vw, 88vw") }}
         </div>
       {{ end }}
     </div>

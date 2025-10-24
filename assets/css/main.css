@@ -66,6 +66,10 @@ img {
   display: block;
 }
 
+header {
+  background-color: #000000;
+}
+
 main {
   display: block;
   min-height: calc(100vh - var(--header-height) - 300px);
@@ -102,8 +106,7 @@ main {
   position: sticky;
   inset: 0;
   z-index: 999;
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(18px);
+  background: #000000;
   border-bottom: 1px solid rgba(229, 231, 235, 0.12);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
 }
@@ -113,6 +116,12 @@ main {
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
+}
+
+.site-header .site-header__inner {
+  width: min(1340px, 94vw);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.25rem);
 }
 
 .site-logo {
@@ -140,36 +149,39 @@ main {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .site-nav__links {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.1rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .site-nav__link {
   color: #ffffff;
   font-weight: 500;
   padding: 0.35rem 0.65rem;
-  border-radius: 999px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.site-nav__link:hover,
-.site-nav__link:focus,
 .site-nav__link--active {
-  color: #ffffff;
-  background-color: rgba(1, 84, 207, 0.28);
+  color: var(--color-primary);
+}
+
+.site-nav__link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
 }
 
 .site-nav__cta {
-  display: none;
+  display: inline-flex;
 }
 
 .nav-toggle {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -276,7 +288,7 @@ main {
 .hero__bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(1, 97, 239, 0.35) 0%, rgba(0, 0, 0, 0.82) 45%, rgba(0, 0, 0, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(1, 84, 207, 0.18) 0%, rgba(0, 0, 0, 0.9) 80%);
   z-index: -1;
 }
 
@@ -288,14 +300,6 @@ main {
 .hero__content {
   display: grid;
   gap: 1.5rem;
-}
-
-.hero__tagline {
-  font-size: 0.95rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  font-weight: 600;
 }
 
 .hero__title {
@@ -901,20 +905,21 @@ pre {
   }
 }
 
-@media (min-width: 900px) {
+@media (max-width: 860px) {
   .site-nav__links {
-    display: flex;
-  }
-
-  .site-nav__cta {
-    display: inline-flex;
-  }
-
-  .nav-toggle,
-  .nav-drawer {
     display: none;
   }
 
+  .site-nav__cta {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 900px) {
   .hero__layout {
     grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
     gap: 3rem;

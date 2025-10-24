@@ -85,8 +85,6 @@
 
     {{- with $siteParams.googleSiteVerificationId -}}<meta name="google-site-verification" content="{{ . }}">{{ end -}}
     <meta http-equiv="x-dns-prefetch-control" content="on">
-    <link rel="preconnect" href="https://esm.sh" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     {{- $critical := resources.Get "css/critical.css" | resources.Minify -}}
     {{- $fontsCSS := resources.Get "css/fonts.css" -}}
@@ -107,116 +105,64 @@
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
-    <script type="module">
-      import * as Turbo from 'https://esm.sh/@hotwired/turbo@8.0.4?bundle';
-      Turbo.session.drive = true;
+    <script defer>
+      (() => {
+        const doc = document;
 
-      const initNavDrawer = () => {
-        const toggle = document.querySelector('[data-nav-toggle]');
-        const drawer = document.querySelector('[data-nav-drawer]');
-        if (!toggle || !drawer) return;
+        const initNavDrawer = () => {
+          const toggle = doc.querySelector('[data-nav-toggle]');
+          const drawer = doc.querySelector('[data-nav-drawer]');
+          if (!toggle || !drawer) return;
 
-        const updateState = () => {
-          const isOpen = drawer.classList.contains('is-open');
-          document.body.classList.toggle('no-scroll', isOpen);
-          toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        };
-
-        toggle.onclick = () => {
-          drawer.classList.toggle('is-open');
-          updateState();
-        };
-
-        drawer.onclick = (event) => {
-          if (event.target === drawer) {
-            drawer.classList.remove('is-open');
-            updateState();
-          }
-        };
-
-        drawer.querySelectorAll('[data-nav-close]').forEach((link) => {
-          link.onclick = () => {
-            drawer.classList.remove('is-open');
-            updateState();
+          const setState = (open) => {
+            drawer.classList.toggle('is-open', open);
+            doc.body.classList.toggle('no-scroll', open);
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
           };
-        });
 
-        updateState();
-      };
-
-      const initEnhancements = () => {
-        initNavDrawer();
-      };
-
-      let quicklinkActive = false;
-      const initPrefetch = async () => {
-        if (quicklinkActive) return;
-        const { listen } = await import('https://esm.sh/quicklink@2.3.0?bundle');
-        listen({
-          origins: [location.origin],
-          ignores: [/\.pdf$/i, /\/(wp-)?admin/],
-          timeoutFn: window.requestIdleCallback || ((fn) => setTimeout(fn, 1))
-        });
-        quicklinkActive = true;
-      };
-
-      const hovered = new Set();
-      const hoverPrefetch = (event) => {
-        const anchor = event.target.closest('a[href]');
-        if (!anchor) return;
-        if (anchor.target === '_blank' || anchor.hasAttribute('download') || anchor.getAttribute('rel')?.includes('external')) return;
-        if (anchor.origin !== location.origin) return;
-        const url = anchor.href.split('#')[0];
-        if (hovered.has(url)) return;
-        hovered.add(url);
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = url;
-        link.as = 'document';
-        document.head.appendChild(link);
-      };
-
-      const setupViewTransitions = () => {
-        if (!document.startViewTransition) return;
-        document.addEventListener('turbo:before-render', (event) => {
-          event.preventDefault();
-          const { resume } = event.detail;
-          document.startViewTransition(() => {
-            resume();
-            initEnhancements();
+          toggle.addEventListener('click', () => {
+            setState(!drawer.classList.contains('is-open'));
           });
-        });
-      };
 
-      const registerServiceWorker = () => {
-        if (!('serviceWorker' in navigator)) return;
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('{{ "sw.js" | relURL }}', { scope: '{{ "/" | relURL }}' }).catch((error) => {
-            console.error('SW registration failed', error);
+          drawer.addEventListener('click', (event) => {
+            if (event.target === drawer) {
+              setState(false);
+            }
           });
-        });
-      };
 
-      document.addEventListener('DOMContentLoaded', () => {
-        initEnhancements();
-        initPrefetch().catch(console.error);
-        document.addEventListener('pointerenter', hoverPrefetch, { passive: true, capture: true });
-      });
+          drawer.querySelectorAll('[data-nav-close]').forEach((link) => {
+            link.addEventListener('click', () => setState(false));
+          });
 
-      document.addEventListener('turbo:load', () => {
-        initEnhancements();
-      });
+          doc.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && drawer.classList.contains('is-open')) {
+              setState(false);
+            }
+          });
 
-      document.addEventListener('turbo:before-visit', () => {
-        const drawer = document.querySelector('[data-nav-drawer]');
-        if (drawer) {
-          drawer.classList.remove('is-open');
-          document.body.classList.remove('no-scroll');
+          setState(false);
+        };
+
+        const registerServiceWorker = () => {
+          if (!('serviceWorker' in navigator)) return;
+          window.addEventListener('load', () => {
+            navigator.serviceWorker
+              .register('{{ "sw.js" | relURL }}', { scope: '{{ "/" | relURL }}' })
+              .catch(() => {});
+          });
+        };
+
+        const init = () => {
+          initNavDrawer();
+          registerServiceWorker();
+        };
+
+        if (doc.readyState === 'loading') {
+          doc.addEventListener('DOMContentLoaded', init, { once: true });
+        } else {
+          init();
         }
-      });
-
-      setupViewTransitions();
-      registerServiceWorker();
+      })();
     </script>
     {{ block "scripts" . }}{{ end }}
   </body>

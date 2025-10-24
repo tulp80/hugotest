@@ -67,6 +67,10 @@ img {
   display: block;
 }
 
+header {
+  background-color: #000000;
+}
+
 main {
   display: block;
   min-height: calc(100vh - var(--header-height) - 300px);
@@ -76,6 +80,12 @@ main {
   width: min(1160px, 92vw);
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.site-header .site-header__inner {
+  width: min(1340px, 94vw);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.25rem);
 }
 
 .section {
@@ -103,8 +113,7 @@ main {
   position: sticky;
   inset: 0;
   z-index: 999;
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(18px);
+  background: #000000;
   border-bottom: 1px solid rgba(229, 231, 235, 0.12);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
 }
@@ -123,35 +132,44 @@ main {
   color: #ffffff;
 }
 
+
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .site-nav__links {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.1rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
+
 
 .site-nav__link {
   color: #ffffff;
   font-weight: 500;
   padding: 0.35rem 0.65rem;
-  border-radius: 999px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.site-nav__link:hover,
-.site-nav__link:focus,
 .site-nav__link--active {
-  color: #ffffff;
-  background-color: rgba(1, 84, 207, 0.28);
+  color: var(--color-primary);
+}
+
+.site-nav__link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.site-nav__cta {
+  display: inline-flex;
 }
 
 .nav-toggle {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -194,11 +212,18 @@ main {
   font-weight: 600;
   color: #ffffff;
   border: 1px solid transparent;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.nav-drawer__link:hover,
-.nav-drawer__link:focus {
-  border-color: rgba(1, 84, 207, 0.4);
-  background-color: rgba(1, 84, 207, 0.1);
+@media (max-width: 860px) {
+  .site-nav__links {
+    display: none;
+  }
+
+  .site-nav__cta {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
 }
