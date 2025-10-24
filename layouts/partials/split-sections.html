@@ -26,7 +26,7 @@
           </div>
           {{ with $section.image }}
             <div class="split__media">
-              {{ partial "responsive-image.html" (dict "src" (.src | default .) "alt" ($section.image.alt | default $section.title) "sizes" "(min-width: 960px) 45vw, 92vw") }}
+              {{ partial "responsive-image.html" (dict "src" (.src | default .) "alt" ($section.image.alt | default $section.title) "sizes" "(min-width: 960px) 45vw, 92vw" "widths" (slice 640 960 1280)) }}
             </div>
           {{ end }}
         </div>

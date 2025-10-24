@@ -26,7 +26,7 @@
       {{ $images := sort ($scratch.Get "images") }}
       <div class="gallery-grid">
         {{ range $images }}
-          {{ partial "responsive-image.html" (dict "src" . "alt" "AyaSelva gallery image" "sizes" "(min-width: 1200px) 25vw, (min-width: 768px) 33vw, 50vw") }}
+          {{ partial "responsive-image.html" (dict "src" . "alt" "AyaSelva gallery image" "sizes" "(min-width: 1200px) 25vw, (min-width: 768px) 33vw, 50vw" "widths" (slice 480 720 960 1280)) }}
         {{ end }}
       </div>
     </div>

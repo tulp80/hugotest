@@ -53,7 +53,7 @@
       </div>
       {{ with $hero.image }}
         <div class="hero__media">
-          {{ partial "responsive-image.html" (dict "src" . "alt" ($hero.image_alt | default "Ayaselva") "loading" "eager" "fetchpriority" "high" "sizes" "(min-width: 960px) 40vw, 88vw") }}
+          {{ partial "responsive-image.html" (dict "src" . "alt" ($hero.image_alt | default "Ayaselva") "loading" "eager" "fetchpriority" "high" "sizes" "(min-width: 960px) 40vw, 88vw" "widths" (slice 640 960 1280 1600)) }}
         </div>
       {{ end }}
     </div>
@@ -70,7 +70,7 @@
           </div>
           {{ with $section.image }}
             <div class="split__media">
-              {{ partial "responsive-image.html" (dict "src" . "alt" ($section.image_alt | default "Ayaselva") "sizes" "(min-width: 960px) 45vw, 92vw") }}
+              {{ partial "responsive-image.html" (dict "src" . "alt" ($section.image_alt | default "Ayaselva") "sizes" "(min-width: 960px) 45vw, 92vw" "widths" (slice 640 960 1280)) }}
             </div>
           {{ end }}
         </div>
@@ -90,7 +90,7 @@
             {{ $post := . }}
             <article class="blog-card">
               {{ with $post.Params.image }}
-                <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $post.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
+                <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $post.Title "sizes" "(min-width: 960px) 320px, 80vw" "widths" (slice 320 480 640)) }}</div>
               {{ end }}
               <div class="blog-card__body">
                 <div class="blog-card__meta">{{ $post.Date.Format "02 Jan 2006" }}</div>

@@ -22,7 +22,7 @@
 
       {{ with .Params.image }}
         <div style="margin-bottom:3rem;">
-          {{ partial "responsive-image.html" (dict "src" . "alt" $.Title "sizes" "(min-width: 960px) 960px, 92vw") }}
+          {{ partial "responsive-image.html" (dict "src" . "alt" $.Title "sizes" "(min-width: 960px) 960px, 92vw" "widths" (slice 480 720 960)) }}
         </div>
       {{ end }}
 
@@ -39,7 +39,7 @@
               {{ $entry := . }}
               <article class="blog-card">
                 {{ with $entry.Params.image }}
-                  <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $entry.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
+                  <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $entry.Title "sizes" "(min-width: 960px) 320px, 80vw" "widths" (slice 320 480 640)) }}</div>
                 {{ end }}
                 <div class="blog-card__body">
                   <div class="blog-card__meta">{{ $entry.Date.Format "02 Jan 2006" }}</div>

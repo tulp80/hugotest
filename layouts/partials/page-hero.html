@@ -5,7 +5,11 @@
     <div class="hero__content">
       {{ if $hero }}
         {{ with $hero.tagline }}
-          <p class="hero__tagline">{{ . }}</p>
+          {{- $tagline := strings.TrimSpace . -}}
+          {{- $title := strings.TrimSpace ($hero.title | default $.Title) -}}
+          {{- if ne (lower $tagline) (lower $title) }}
+            <p class="hero__tagline">{{ . }}</p>
+          {{- end -}}
         {{ end }}
         <h1 class="hero__title">{{ $hero.title | default .Title }}</h1>
         {{ with $hero.description }}
@@ -25,7 +29,7 @@
     </div>
     {{ with $hero.image }}
       <div class="hero__media">
-        {{ partial "responsive-image.html" (dict "src" .src "alt" (.alt | default $.Title) "loading" "eager" "sizes" "(min-width: 960px) 40vw, 80vw") }}
+        {{ partial "responsive-image.html" (dict "src" .src "alt" (.alt | default $.Title) "loading" "eager" "sizes" "(min-width: 960px) 40vw, 80vw" "widths" (slice 640 960 1280)) }}
       </div>
     {{ end }}
   </div>

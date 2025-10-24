@@ -7,7 +7,10 @@
 {{- $fetchpriority := .fetchpriority -}}
 {{- $widths := .widths | default (slice 360 640 960 1280) -}}
 {{- $rawPath := (strings.TrimPrefix "/" $src) -}}
-{{- $image := resources.GetMatch (printf "images/%s" $rawPath) -}}
+{{- $image := resources.GetMatch $rawPath -}}
+{{- if not $image -}}
+  {{- $image = resources.GetMatch (printf "images/%s" $rawPath) -}}
+{{- end -}}
 {{- if not $image -}}
   {{- $image = resources.GetMatch (printf "images/%s" (path.Base $rawPath)) -}}
 {{- end -}}

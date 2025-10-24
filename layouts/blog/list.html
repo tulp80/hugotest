@@ -20,7 +20,7 @@
           {{ $page := . }}
           <article class="blog-card">
             {{ with $page.Params.image }}
-              <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $page.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
+              <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $page.Title "sizes" "(min-width: 960px) 320px, 80vw" "widths" (slice 320 480 640)) }}</div>
             {{ end }}
             <div class="blog-card__body">
               <div class="blog-card__meta">{{ $page.Date.Format "02 Jan 2006" }}</div>

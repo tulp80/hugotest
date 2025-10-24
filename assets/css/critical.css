@@ -214,6 +214,142 @@ main {
   border: 1px solid transparent;
 }
 
+.hero {
+  padding: clamp(4rem, 8vw, 6.5rem) 0 4rem;
+  position: relative;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: none;
+  z-index: -1;
+}
+
+.hero__layout {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.hero__content {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hero__title {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.hero__text {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.badge-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.badge-list__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: rgba(1, 84, 207, 0.14);
+  color: rgba(219, 231, 255, 0.92);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.badge-list__icon {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #e9f2ff;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.hero__media {
+  position: relative;
+}
+
+.hero__media img {
+  border-radius: 1.75rem;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.split {
+  display: grid;
+  gap: 2.25rem;
+  align-items: center;
+}
+
+.split__text {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.split__media img {
+  border-radius: 1.5rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 720px) {
+  .hero__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    align-items: center;
+    gap: 2.75rem;
+  }
+
+  .hero__content {
+    max-width: 560px;
+  }
+
+  .hero__media {
+    max-width: 420px;
+    justify-self: center;
+  }
+
+  .split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+    gap: 3rem;
+  }
+
+  .hero__media {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .split {
+    gap: 3rem;
+  }
+}
+
 @media (max-width: 860px) {
   .site-nav__links {
     display: none;
