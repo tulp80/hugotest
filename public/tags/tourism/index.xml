@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tourism on Ayaselva</title>
-    <link>https://www.ayaselva.com/tags/tourism/</link>
+    <link>http://localhost:1313/tags/tourism/</link>
     <description>Recent content in Tourism on Ayaselva</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 18 Jun 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://www.ayaselva.com/tags/tourism/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/tourism/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tamshiyacu&#39;s Ayahuasca Journey</title>
-      <link>https://www.ayaselva.com/blog/blog003-tamshiyacus-ayahuasca-journey/</link>
+      <link>http://localhost:1313/blog/blog003-tamshiyacus-ayahuasca-journey/</link>
       <pubDate>Tue, 18 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.ayaselva.com/blog/blog003-tamshiyacus-ayahuasca-journey/</guid>
+      <guid>http://localhost:1313/blog/blog003-tamshiyacus-ayahuasca-journey/</guid>
       <description>&lt;p&gt;Tamshiyacu, a town with nearly 5,000 residents, is located 29 kilometers south of Iquitos, Peru. Founded in 1911 by Toribio FernÃ¡ndez Bautista, it was intended as a frontier post to solidify Peruvian presence amidst neighboring countries. The town has since evolved into a unique destination, blending historical roots with vibrant experiential tourism.&lt;/p&gt;&#xA;&lt;p&gt;FernÃ¡ndez Bautista, a tax collector and timber entrepreneur, envisioned Tamshiyacu as a beacon of civilization. He meticulously planned the town with wide streets and public spaces, aiming to create a civilized community in the heart of the Amazon. His vision was not only to establish a stable settlement but also to propagate Peruvian culture and values. Bautista&amp;rsquo;s efforts laid the groundwork for a thriving community, where traditions and modernity coexist harmoniously.&lt;/p&gt;</description>
     </item>
   </channel>

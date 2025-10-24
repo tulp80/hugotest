@@ -22,7 +22,7 @@
 
       {{ with .Params.image }}
         <div style="margin-bottom:3rem;">
-          <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
+          {{ partial "responsive-image.html" (dict "src" . "alt" $.Title "sizes" "(min-width: 960px) 960px, 92vw") }}
         </div>
       {{ end }}
 
@@ -36,15 +36,16 @@
           <h2>Related posts</h2>
           <div class="blog-grid">
             {{ range $related }}
+              {{ $entry := . }}
               <article class="blog-card">
-                {{ with .Params.image }}
-                  <div class="blog-card__media"><img src="{{ . }}" alt="{{ $.Title }}" loading="lazy"></div>
+                {{ with $entry.Params.image }}
+                  <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $entry.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
                 {{ end }}
                 <div class="blog-card__body">
-                  <div class="blog-card__meta">{{ .Date.Format "02 Jan 2006" }}</div>
-                  <h3 class="blog-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                  {{ with .Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
-                  <a class="blog-card__link" href="{{ .RelPermalink }}">Read more →</a>
+                  <div class="blog-card__meta">{{ $entry.Date.Format "02 Jan 2006" }}</div>
+                  <h3 class="blog-card__title"><a href="{{ $entry.RelPermalink }}">{{ $entry.Title }}</a></h3>
+                  {{ with $entry.Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
+                  <a class="blog-card__link" href="{{ $entry.RelPermalink }}">Read more →</a>
                 </div>
               </article>
             {{ end }}

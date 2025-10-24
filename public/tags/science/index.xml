@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Science on Ayaselva</title>
-    <link>https://www.ayaselva.com/tags/science/</link>
+    <link>http://localhost:1313/tags/science/</link>
     <description>Recent content in Science on Ayaselva</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 25 Jun 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://www.ayaselva.com/tags/science/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/science/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Psychedelic integration, understanding and practices</title>
-      <link>https://www.ayaselva.com/blog/blog010-psychedelic-integration-understanding-and-practices/</link>
+      <link>http://localhost:1313/blog/blog010-psychedelic-integration-understanding-and-practices/</link>
       <pubDate>Tue, 25 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.ayaselva.com/blog/blog010-psychedelic-integration-understanding-and-practices/</guid>
+      <guid>http://localhost:1313/blog/blog010-psychedelic-integration-understanding-and-practices/</guid>
       <description>&lt;p&gt;Psychedelic substances, long suppressed by policies such as the War on Drugs, are seeing a resurgence in interest in Western societies. The 1960s saw significant research and cultural interest, which waned but has resurged in recent years. Various substances, including psilocybin, ketamine, MDMA, ayahuasca, and DMT, are now undergoing clinical trials for mental health treatments. This renewed interest has led to a focus on the concept of &amp;ldquo;psychedelic integration,&amp;rdquo; a process deemed crucial for maximizing the therapeutic benefits of psychedelic experiences.&lt;/p&gt;</description>
     </item>
   </channel>

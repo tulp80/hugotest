@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Centers on Ayaselva</title>
-    <link>https://www.ayaselva.com/tags/centers/</link>
+    <link>http://localhost:1313/tags/centers/</link>
     <description>Recent content in Centers on Ayaselva</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 17 Jun 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://www.ayaselva.com/tags/centers/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/centers/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ayahuasca use</title>
-      <link>https://www.ayaselva.com/blog/blog002-ayahuasca-use/</link>
+      <link>http://localhost:1313/blog/blog002-ayahuasca-use/</link>
       <pubDate>Mon, 17 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.ayaselva.com/blog/blog002-ayahuasca-use/</guid>
+      <guid>http://localhost:1313/blog/blog002-ayahuasca-use/</guid>
       <description>&lt;p&gt;Ayahuasca is a powerful psychotropic brew used by indigenous groups in the Amazon, Orinoco Basin, and Pacific lowlands of Colombia and Ecuador. It plays a significant role in their medical, religious, artistic, and social practices. Over time, its use spread to mestizo populations in Peru, Ecuador, and Colombia, where it became part of healing ceremonies. This post explores its history, cultural significance, and modern-day usage.&lt;/p&gt;&#xA;&lt;p&gt;Ayahuasca has a long history among indigenous tribes in the Amazon, where it is revered for its ability to facilitate communication with the spiritual realm. The brew typically combines the Banisteriopsis caapi vine and Psychotria viridis leaves, though variations exist. Early European explorers misunderstood these practices, often viewing them through the lens of their own religious beliefs, which led to the criminalization of these plants.&lt;/p&gt;</description>
     </item>
   </channel>

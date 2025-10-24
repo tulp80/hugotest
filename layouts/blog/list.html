@@ -17,15 +17,16 @@
       {{ $paginator := .Paginate (.Pages.ByDate.Reverse) }}
       <div class="blog-grid">
         {{ range $paginator.Pages }}
+          {{ $page := . }}
           <article class="blog-card">
-            {{ with .Params.image }}
-              <div class="blog-card__media"><img src="{{ . }}" alt="{{ $.Title }}" loading="lazy"></div>
+            {{ with $page.Params.image }}
+              <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $page.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
             {{ end }}
             <div class="blog-card__body">
-              <div class="blog-card__meta">{{ .Date.Format "02 Jan 2006" }}</div>
-              <h3 class="blog-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-              {{ with .Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
-              <a class="blog-card__link" href="{{ .RelPermalink }}">Read more →</a>
+              <div class="blog-card__meta">{{ $page.Date.Format "02 Jan 2006" }}</div>
+              <h3 class="blog-card__title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+              {{ with $page.Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
+              <a class="blog-card__link" href="{{ $page.RelPermalink }}">Read more →</a>
             </div>
           </article>
         {{ end }}

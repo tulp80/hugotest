@@ -20,7 +20,7 @@
       </div>
       {{ with $hero.image }}
         <div class="hero__media">
-          <img src="{{ . }}" alt="{{ $hero.image_alt | default "Ayaselva" }}" loading="eager">
+          {{ partial "responsive-image.html" (dict "src" . "alt" ($hero.image_alt | default "Ayaselva") "loading" "eager" "sizes" "(min-width: 960px) 40vw, 88vw") }}
         </div>
       {{ end }}
     </div>
@@ -37,7 +37,7 @@
           </div>
           {{ with $section.image }}
             <div class="split__media">
-              <img src="{{ . }}" alt="{{ $section.image_alt | default "Ayaselva" }}" loading="lazy">
+              {{ partial "responsive-image.html" (dict "src" . "alt" ($section.image_alt | default "Ayaselva") "sizes" "(min-width: 960px) 45vw, 92vw") }}
             </div>
           {{ end }}
         </div>
@@ -54,15 +54,16 @@
         {{ with $blog.subtitle }}<p class="section__subtitle">{{ . }}</p>{{ end }}
         <div class="blog-grid">
           {{ range $posts }}
+            {{ $post := . }}
             <article class="blog-card">
-              {{ with .Params.image }}
-                <div class="blog-card__media"><img src="{{ . }}" alt="{{ $.Title }}" loading="lazy"></div>
+              {{ with $post.Params.image }}
+                <div class="blog-card__media">{{ partial "responsive-image.html" (dict "src" . "alt" $post.Title "sizes" "(min-width: 960px) 320px, 80vw") }}</div>
               {{ end }}
               <div class="blog-card__body">
-                <div class="blog-card__meta">{{ .Date.Format "02 Jan 2006" }}</div>
-                <h3 class="blog-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                {{ with .Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
-                <a class="blog-card__link" href="{{ .RelPermalink }}">Read more →</a>
+                <div class="blog-card__meta">{{ $post.Date.Format "02 Jan 2006" }}</div>
+                <h3 class="blog-card__title"><a href="{{ $post.RelPermalink }}">{{ $post.Title }}</a></h3>
+                {{ with $post.Params.excerpt }}<p class="blog-card__excerpt">{{ . }}</p>{{ end }}
+                <a class="blog-card__link" href="{{ $post.RelPermalink }}">Read more →</a>
               </div>
             </article>
           {{ end }}

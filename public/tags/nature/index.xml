@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nature on Ayaselva</title>
-    <link>https://www.ayaselva.com/tags/nature/</link>
+    <link>http://localhost:1313/tags/nature/</link>
     <description>Recent content in Nature on Ayaselva</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 24 Jun 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://www.ayaselva.com/tags/nature/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/nature/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Iquitos Peru, a place worth visiting</title>
-      <link>https://www.ayaselva.com/blog/blog009-iquitos-peru-a-place-worth-visiting/</link>
+      <link>http://localhost:1313/blog/blog009-iquitos-peru-a-place-worth-visiting/</link>
       <pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.ayaselva.com/blog/blog009-iquitos-peru-a-place-worth-visiting/</guid>
+      <guid>http://localhost:1313/blog/blog009-iquitos-peru-a-place-worth-visiting/</guid>
       <description>&lt;p&gt;Nestled in the heart of the Peruvian Amazon, Iquitos is a city that pulses with a unique blend of vibrant culture, rich history, and natural beauty. Known as the largest city in the world not accessible by road, Iquitos can only be reached by boat or plane, adding an extra layer of mystique to its allure. This city is a gateway to the Amazon rainforest, offering visitors an unforgettable experience that blends adventure, spirituality, and an immersion into indigenous cultures. Here’s a closer look at what makes Iquitos a must-visit destination.&lt;/p&gt;</description>
     </item>
   </channel>

@@ -1,0 +1,2 @@
+{{- $sizes := .Page.Params.imageSizes | default "(min-width: 960px) 960px, 96vw" -}}
+{{- partial "responsive-image.html" (dict "src" .Destination "alt" .Text "sizes" $sizes "loading" (cond (eq .Ordinal 1) "eager" "lazy")) -}}

@@ -84,18 +84,34 @@
     {{- if $ogImage }}<meta name="twitter:image" content="{{ $ogImage }}">{{ end -}}
 
     {{- with $siteParams.googleSiteVerificationId -}}<meta name="google-site-verification" content="{{ . }}">{{ end -}}
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="preconnect" href="https://esm.sh" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-    <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+    {{- $critical := resources.Get "css/critical.css" | resources.Minify -}}
+    {{- $fontsCSS := resources.Get "css/fonts.css" -}}
+    {{- $mainCSS := resources.Get "css/main.css" -}}
+    {{- $appCSS := slice $fontsCSS $mainCSS | resources.Concat "css/app.css" | resources.Minify -}}
+    {{- $appAsset := $appCSS | resources.Fingerprint "sha384" -}}
+
+    <link rel="preload" href="{{ "/fonts/InterVariableLatin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+    {{- if $critical }}<style data-critical>{{ $critical.Content | safeCSS }}</style>{{ end -}}
+    <link rel="preload" href="{{ $appAsset.RelPermalink }}" as="style" integrity="{{ $appAsset.Data.Integrity }}" crossorigin>
+    <link rel="stylesheet" href="{{ $appAsset.RelPermalink }}" integrity="{{ $appAsset.Data.Integrity }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ $appAsset.RelPermalink }}" integrity="{{ $appAsset.Data.Integrity }}" crossorigin></noscript>
     {{ block "head" . }}{{ end }}
   </head>
   <body>
     {{ partial "header.html" . }}
-    <main role="main">
+    <main id="app-shell" role="main" data-view-transition-name="page">
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
-    <script>
-      (function () {
+    <script type="module">
+      import * as Turbo from 'https://esm.sh/@hotwired/turbo@8.0.4?bundle';
+      Turbo.session.drive = true;
+
+      const initNavDrawer = () => {
         const toggle = document.querySelector('[data-nav-toggle]');
         const drawer = document.querySelector('[data-nav-drawer]');
         if (!toggle || !drawer) return;
@@ -106,27 +122,101 @@
           toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         };
 
-        toggle.addEventListener('click', () => {
+        toggle.onclick = () => {
           drawer.classList.toggle('is-open');
           updateState();
-        });
+        };
 
-        drawer.addEventListener('click', (event) => {
+        drawer.onclick = (event) => {
           if (event.target === drawer) {
             drawer.classList.remove('is-open');
             updateState();
           }
-        });
+        };
 
-        document.querySelectorAll('[data-nav-close]').forEach((link) => {
-          link.addEventListener('click', () => {
+        drawer.querySelectorAll('[data-nav-close]').forEach((link) => {
+          link.onclick = () => {
             drawer.classList.remove('is-open');
             updateState();
-          });
+          };
         });
 
         updateState();
-      }());
+      };
+
+      const initEnhancements = () => {
+        initNavDrawer();
+      };
+
+      let quicklinkActive = false;
+      const initPrefetch = async () => {
+        if (quicklinkActive) return;
+        const { listen } = await import('https://esm.sh/quicklink@2.3.0?bundle');
+        listen({
+          origins: [location.origin],
+          ignores: [/\.pdf$/i, /\/(wp-)?admin/],
+          timeoutFn: window.requestIdleCallback || ((fn) => setTimeout(fn, 1))
+        });
+        quicklinkActive = true;
+      };
+
+      const hovered = new Set();
+      const hoverPrefetch = (event) => {
+        const anchor = event.target.closest('a[href]');
+        if (!anchor) return;
+        if (anchor.target === '_blank' || anchor.hasAttribute('download') || anchor.getAttribute('rel')?.includes('external')) return;
+        if (anchor.origin !== location.origin) return;
+        const url = anchor.href.split('#')[0];
+        if (hovered.has(url)) return;
+        hovered.add(url);
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        link.as = 'document';
+        document.head.appendChild(link);
+      };
+
+      const setupViewTransitions = () => {
+        if (!document.startViewTransition) return;
+        document.addEventListener('turbo:before-render', (event) => {
+          event.preventDefault();
+          const { resume } = event.detail;
+          document.startViewTransition(() => {
+            resume();
+            initEnhancements();
+          });
+        });
+      };
+
+      const registerServiceWorker = () => {
+        if (!('serviceWorker' in navigator)) return;
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('{{ "sw.js" | relURL }}', { scope: '{{ "/" | relURL }}' }).catch((error) => {
+            console.error('SW registration failed', error);
+          });
+        });
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initEnhancements();
+        initPrefetch().catch(console.error);
+        document.addEventListener('pointerenter', hoverPrefetch, { passive: true, capture: true });
+      });
+
+      document.addEventListener('turbo:load', () => {
+        initEnhancements();
+      });
+
+      document.addEventListener('turbo:before-visit', () => {
+        const drawer = document.querySelector('[data-nav-drawer]');
+        if (drawer) {
+          drawer.classList.remove('is-open');
+          document.body.classList.remove('no-scroll');
+        }
+      });
+
+      setupViewTransitions();
+      registerServiceWorker();
     </script>
     {{ block "scripts" . }}{{ end }}
   </body>

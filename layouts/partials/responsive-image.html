@@ -1,0 +1,62 @@
+{{- $src := .src | default . -}}
+{{- $alt := .alt | default "" -}}
+{{- $class := .class -}}
+{{- $loading := .loading | default "lazy" -}}
+{{- $decoding := .decoding | default "async" -}}
+{{- $sizes := .sizes | default "(min-width: 1024px) 1024px, 100vw" -}}
+{{- $widths := .widths | default (slice 360 640 960 1280 1600) -}}
+{{- $rawPath := (strings.TrimPrefix "/" $src) -}}
+{{- $image := resources.GetMatch (printf "images/%s" $rawPath) -}}
+{{- if not $image -}}
+  {{- $image = resources.GetMatch (printf "images/%s" (path.Base $rawPath)) -}}
+{{- end -}}
+{{- $fallback := dict "rel" $src "width" nil "height" nil -}}
+{{- $avifSet := slice -}}
+{{- $webpSet := slice -}}
+{{- $originalSet := slice -}}
+
+{{- if $image -}}
+  {{- $maxWidth := $image.Width -}}
+  {{- $valid := slice -}}
+  {{- range $widths -}}
+    {{- if ge $maxWidth . -}}
+      {{- $valid = $valid | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not (gt (len $valid) 0) -}}
+    {{- $fallbackWidth := $maxWidth -}}
+    {{- if gt $fallbackWidth 1600 -}}{{- $fallbackWidth = 1600 -}}{{- end -}}
+    {{- $valid = slice $fallbackWidth -}}
+  {{- end -}}
+  {{- range $valid -}}
+    {{- $avif := $image.Resize (printf "%dx avif" .) -}}
+    {{- $webp := $image.Resize (printf "%dx webp" .) -}}
+    {{- $img := $image.Resize (printf "%dx jpg" .) -}}
+    {{- $avifSet = $avifSet | append (printf "%s %dw" $avif.RelPermalink .) -}}
+    {{- $webpSet = $webpSet | append (printf "%s %dw" $webp.RelPermalink .) -}}
+    {{- $originalSet = $originalSet | append (printf "%s %dw" $img.RelPermalink .) -}}
+    {{- $fallback = dict "rel" $img.RelPermalink "width" $img.Width "height" $img.Height -}}
+  {{- end -}}
+{{- else -}}
+  {{- $staticPath := printf "static/%s" $rawPath -}}
+  {{- if fileExists $staticPath -}}
+    {{- $dims := imageConfig $staticPath -}}
+    {{- $fallback = dict "rel" (printf "/%s" $rawPath) "width" $dims.Width "height" $dims.Height -}}
+  {{- else -}}
+    {{- $fallback = dict "rel" $src "width" nil "height" nil -}}
+  {{- end -}}
+{{- end -}}
+
+<picture{{ with $class }} class="{{ . }}"{{ end }}>
+  {{- if gt (len $avifSet) 0 -}}
+    <source type="image/avif" srcset="{{ delimit $avifSet ", " }}" sizes="{{ $sizes }}">
+  {{- end -}}
+  {{- if gt (len $webpSet) 0 -}}
+    <source type="image/webp" srcset="{{ delimit $webpSet ", " }}" sizes="{{ $sizes }}">
+  {{- end -}}
+  {{- if gt (len $originalSet) 0 -}}
+    <img src="{{ $fallback.rel }}" srcset="{{ delimit $originalSet ", " }}" sizes="{{ $sizes }}" alt="{{ $alt }}" loading="{{ $loading }}" decoding="{{ $decoding }}" width="{{ if $fallback.width }}{{ $fallback.width }}{{ end }}" height="{{ if $fallback.height }}{{ $fallback.height }}{{ end }}">
+  {{- else -}}
+    <img src="{{ $fallback.rel }}" alt="{{ $alt }}" loading="{{ $loading }}" decoding="{{ $decoding }}"{{ with $fallback.width }} width="{{ . }}"{{ end }}{{ with $fallback.height }} height="{{ . }}"{{ end }}>
+  {{- end -}}
+</picture>
